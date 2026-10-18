@@ -1,6 +1,8 @@
 # ¿Es fraude? — a second opinion before you fall for a scam
 
-**Paste a suspicious text, upload a screenshot, describe a phone call or type the name of a loan app. In a few seconds you get the warning signs (quoted from the message), what official Mexican sources say, what to do, where to confirm or report, and a draft complaint.** Free, no sign-up, in Spanish, built for Mexico.
+**English** · [Español](README.es.md)
+
+**Paste a suspicious text, upload a screenshot, describe a phone call or type the name of a loan app. In a few seconds you get the warning signs (quoted from the message), what official Mexican sources say, what to do, where to confirm or report, and a draft complaint.** Free, no sign-up, in Spanish and English, built for Mexico.
 
 > **Live demo: [English](https://es-fraude-seven.vercel.app/?lang=en) · [Español](https://es-fraude-seven.vercel.app/)** · Built for the Nebius x NVIDIA Global AI Hackathon (Best Apps and Agents track)
 
@@ -85,13 +87,14 @@ Three sets of synthetic cases written from official alerts (CONDUSEF, SAT, SSPC,
 | `eval/cases.json` | 45 | 30/30 | 15/15 | Used to tune the rules |
 | `eval/holdout.json` | 40 | 25/25 | 15/15 | First run before tuning: 24/25 and 14/15 |
 | `eval/third.json` | 40 | **25/25** | **15/15** | **Unseen, measured once with no changes**; 27 hard cases; pattern correct 15/15 |
+| `eval/third.json`, answers in English | 40 | 25/25 | 15/15 | Same set with `--lang en`; pattern correct 14/15 |
 
 Median latency 5.7–6.8 s, p90 7.2–10.1 s. The cases are synthetic; testing with real messages from real people is the next step.
 
 Run it yourself:
 
 ```bash
-npx tsx --env-file=.env scripts/evaluate.ts eval/third.json
+npx tsx --env-file=.env scripts/evaluate.ts eval/third.json            # add --lang en for English answers
 ```
 
 ## Run it
@@ -128,6 +131,8 @@ Without `TAVILY_API_KEY` the app still works, using only the deterministic check
 |---|---|
 | `src/analyze.ts` | The pipeline: read, extract, verify, reason, compose |
 | `src/catalog.ts` | Verified scam patterns, official channels and domains |
+| `src/report.ts` | Verified reporting routes, urgent steps and evidence checklist |
+| `src/i18n.ts` | Spanish and English text written by the app |
 | `src/official.ts` | Hostname and lookalike-domain checks |
 | `src/tavily.ts` | Search limited to names, domains and phone numbers |
 | `src/llm.ts` | Token Factory client |
