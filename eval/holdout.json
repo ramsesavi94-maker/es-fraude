@@ -1,0 +1,388 @@
+[
+  {
+    "id": "h01",
+    "kind": "message",
+    "text": "Nuestro círculo de inversión distribuye rendimientos del 8 % mensual, garantizados por contrato y sin exposición a pérdidas; las aportaciones se reciben en la cuenta personal de nuestro administrador, Darío Olmeda.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2691-18-09-2025",
+    "note": "difícil: inversión sintética sin enlace, urgencia ni errores; la comparación del conjunto con eval/cases.json quedó sin verificar por un fallo de lectura del entorno."
+  },
+  {
+    "id": "h02",
+    "kind": "message",
+    "text": "El departamento de Jacarandas 46 incluye mantenimiento y estacionamiento por $6,400 mensuales. Estoy fuera del país; para que el encargado permita visitarlo se deposita un apartado de $2,800 a nombre de mi sobrino. La documentación de propiedad se muestra después del depósito.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://fiscalia.chihuahua.gob.mx/advierte-fiscalia-sobre-fraudes-en-rentas-de-inmuebles-a-traves-de-redes-sociales/",
+    "note": "difícil: recrea el apartado previo a visitar una renta inexistente documentado en septiembre de 2026, sin enlace ni presión temporal."
+  },
+  {
+    "id": "h03",
+    "kind": "call",
+    "text": "Llamada desde 55 0138 2046: «Soy Eliana, del soporte de WhatsApp. Estamos conciliando el registro de su cuenta con el dispositivo principal. Le llegará un SMS de seis dígitos; puede dictármelo para cerrar la revisión, aunque el mensaje indique que no lo comparta».",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM1716-16-06-2025",
+    "note": "difícil: falso soporte que solicita el código de registro sin enlaces, amenazas ni urgencia explícita."
+  },
+  {
+    "id": "h04",
+    "kind": "message",
+    "text": "CFE | Regularización de suministro. Su recibo presenta una diferencia de $387.60 por ajuste de medición. Cubra el importe en https://conciliacion-electrica.example/recibo y capture los datos completos de su tarjeta para asociar el pago al medidor.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://www.cfe.gob.mx/cdn/2019/Archivos/Boletines/166%20-%20bole%20fraudes%20vf.pdf",
+    "note": "Cobro sintético mediante suplantación de CFE, apoyado en su advertencia de fraude digital de diciembre de 2025."
+  },
+  {
+    "id": "h05",
+    "kind": "message",
+    "text": "Telmex — Conciliación de facturación. Para corregir el cargo duplicado de $529, responda este correo con una fotografía de ambos lados de la tarjeta utilizada; el área contable aplicará el abono al concluir la validación.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://telmex.com/web/asistencia/protegete-del-phishing",
+    "note": "difícil: no contiene enlace ni urgencia y pide datos de tarjeta por correo; la fuente oficial respalda el mecanismo, pero no fecha esta variante en 2025–2026."
+  },
+  {
+    "id": "h06",
+    "kind": "message",
+    "text": "Liverpool: recibimos una solicitud para cancelar la pantalla de $28,490 asociada a su cuenta. Si usted no reconoce la compra, comuníquese al 55 0174 3062 y proporcione al asesor el código de autorización que recibirá de su banco para completar la cancelación.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://www.col.gob.mx/Portal/detalle_noticia/NjA4NzU%3D",
+    "note": "Recrea la suplantación de Liverpool por compras no reconocidas alertada en enero de 2025, sin atribuir al banco el contacto inicial."
+  },
+  {
+    "id": "h07",
+    "kind": "message",
+    "text": "Asunto: Conciliación documental del ejercicio. Estimada Mariana: para completar la revisión de proveedores, adjuntamos el formulario de autenticación corporativa. Ábralo e introduzca su dirección de correo y la contraseña habitual del buzón; el sistema incorporará la evidencia al expediente. Atentamente, Coordinación de Cumplimiento.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://seguridad.sonora.gob.mx/acciones/alerta-gobierno-de-sonora-por-paginas-espejo-para-cometer-fraude.html",
+    "note": "difícil: phishing sintético con redacción corporativa correcta, sin enlace visible ni urgencia; la fuente de 2025 respalda la suplantación para capturar credenciales."
+  },
+  {
+    "id": "h08",
+    "kind": "call",
+    "text": "Entra una llamada desde 33 0142 6809; se escucha una voz idéntica a la de mi hermana Renata, con su entonación habitual: «Me chocaron y el otro conductor acepta $7,300 para arreglarlo. Deposítalos a la cuenta que te voy a mandar». Cuando pregunto por nuestra palabra familiar, repite la misma frase sin responder.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "family_impersonation"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/la-sspc-emite-recomendaciones-ante-posibles-fraudes-por-clonacion-de-voz-con-inteligencia-artificial",
+    "note": "difícil: llamada sintética con voz clonada basada en la alerta de marzo de 2025, sin supuesto secuestro."
+  },
+  {
+    "id": "h09",
+    "kind": "message",
+    "text": "BBVA account review completed. To synchronize your security profile, reply with the one-time code shown in your banking app. No payment is required; this is a routine verification.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "bank_impersonation"
+    ],
+    "source": "https://www.condusef.gob.mx/index.php?idc=2718&idcat=3&p=contenido",
+    "note": "difícil: mensaje íntegramente en inglés que solicita un código bancario sin enlace, errores ni urgencia."
+  },
+  {
+    "id": "h10",
+    "kind": "message",
+    "text": "¿Eres tú en este video? https://clip-compartido.example/v/7b",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://www.gob.mx/gncertmx/articulos/110843",
+    "note": "difícil: señuelo mínimo documentado oficialmente en 2022, incluido por el requisito de mensajes cortos sin presentarlo como novedad de 2025–2026."
+  },
+  {
+    "id": "h11",
+    "kind": "message",
+    "text": "Asunto: Acuse de conciliación tributaria. El SAT solicita incorporar al expediente electrónico sus archivos .cer y .key, junto con la contraseña de la llave privada. Remita los tres elementos como respuesta a este correo para integrar la revisión de sus comprobantes.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "sat_impersonation"
+    ],
+    "source": "https://www.gob.mx/gncertmx/articulos/recomendaciones-de-ciberseguridad-ante-falsas-notificaciones-fiscales",
+    "note": "difícil: falsa gestión fiscal sin amenazas ni enlaces que intenta obtener la llave privada de la e.firma."
+  },
+  {
+    "id": "h12",
+    "kind": "call",
+    "text": "Me llaman del 81 0163 4927 y dicen ser de Santander: «Su reclamación se resolverá mediante una operación espejo. Entre a transferencias y registre la cuenta de resguardo que le dictaré; el importe regresará cuando termine la conciliación. No necesitamos que nos diga su contraseña».",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "bank_impersonation"
+    ],
+    "source": "https://www.condusef.gob.mx/index.php?idc=2718&idcat=3&p=contenido",
+    "note": "difícil: la aparente protección de la contraseña encubre una transferencia inducida, sin enlace ni urgencia explícita."
+  },
+  {
+    "id": "h13",
+    "kind": "call",
+    "text": "Llamada del 55 0195 7314: «Su esposo acudió a la entrevista que le ofrecimos y ahora está bajo nuestro control. Escuche». Reproducen un audio entrecortado pidiendo ayuda y exigen $24,000 por dejarlo salir; él había avisado que durante la entrevista le pedirían apagar el teléfono.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "virtual_kidnapping"
+    ],
+    "source": "https://www.chihuahua.gob.mx/prensa/alerta-sspe-sobre-nueva-modalidad-de-secuestro-virtual-en-chihuahua",
+    "note": "Recrea la modalidad de 2025 que incomunica mediante una entrevista ficticia y exige rescate a familiares."
+  },
+  {
+    "id": "h14",
+    "kind": "call",
+    "text": "Después de anunciar mi panadería recibo una llamada del 33 0187 5204: «Ya vimos dónde está su local y a qué hora abre. Somos quienes controlamos esa zona. La aportación para que pueda trabajar es de $4,500 semanales; si no participa, vamos a romper sus vitrinas».",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "phone_extortion"
+    ],
+    "source": "https://ssp.zacatecas.gob.mx/apoyan-y-desactivan-fuerzas-de-seguridad-intento-de-extorsion/",
+    "note": "Extorsión telefónica sintética basada en un caso de mayo de 2025 iniciado tras anunciar un negocio."
+  },
+  {
+    "id": "h15",
+    "kind": "message",
+    "text": "Llegó un paquete que no pedí con esta tarjeta: «Cortesía para residentes. Para identificar al remitente, escanee el QR». La pantalla que abre muestra un formulario que exige número de tarjeta, vencimiento y CVV para revelar quién envió el obsequio.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM781-17-03-2026",
+    "note": "difícil: QR en un paquete inesperado conforme a la alerta de marzo de 2026, sin anuncio de premio ni entrega pendiente."
+  },
+  {
+    "id": "h16",
+    "kind": "app",
+    "text": "La app BrisaVale me depositó $900 después de que solo consulté una oferta. Su pantalla ahora dice: «Saldo exigible: $2,740. Hemos respaldado su agenda y fotografías; si no liquida, enviaremos a sus contactos un cartel con su identificación y la leyenda de estafador».",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "loan_app_extortion"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2881-06-10-25",
+    "note": "Nombre de app inventado para una variante de montadeudas con depósito no solicitado y amenaza de difamación."
+  },
+  {
+    "id": "h17",
+    "kind": "message",
+    "text": "Hi, soy Lía del equipo de campañas. Your trial tasks ya generaron $180 por calificar productos. Para pasar al grupo remunerado debes aportar $650 de saldo operativo; al completar el siguiente lote liberamos la aportación junto con tu comisión.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_job_offer"
+    ],
+    "source": "https://gabinetedeseguridad.gob.mx/contenido/6183/sspc-alerta-sobre-fraudes-por-recompensas-falsas-en-redes-sociales",
+    "note": "Oferta en spanglish basada en la alerta de julio de 2025 sobre tareas pagadas que después exigen transferencias."
+  },
+  {
+    "id": "h18",
+    "kind": "message",
+    "text": "Mesa de distribución: la entrega de su módem Telmex requiere identificar al receptor. Enviaremos un código de seis cifras; aunque el SMS mencione el registro de WhatsApp, respóndalo aquí porque nuestra herramienta de reparto utiliza ese mismo sistema.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_delivery"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM1716-16-06-2025",
+    "note": "difícil: variante sintética de robo de WhatsApp con pretexto de entrega, respaldada por la advertencia de 2025 sobre no compartir códigos."
+  },
+  {
+    "id": "h19",
+    "kind": "message",
+    "text": "Tu participación en la dinámica de otoño fue seleccionada para recibir una cafetera. El producto está cubierto; únicamente debes registrar tu tarjeta y su código de seguridad en https://obsequio-hogar.example/validacion para acreditar que eres mayor de edad.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_prize"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/index.php/comunicacion/nota/COM1785-23-06-2025",
+    "note": "Regalo falso que disfraza la captura de datos financieros como comprobación de edad."
+  },
+  {
+    "id": "h20",
+    "kind": "message",
+    "text": "Su expediente para el apoyo de Bienestar quedó preautorizado. La tarjeta se entrega en el módulo, pero antes debe cubrir $240 de integración de padrón mediante depósito al gestor Néstor Valdara; conserve el comprobante para recogerla.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_government_aid"
+    ],
+    "source": "https://www.programasparaelbienestar.gob.mx/noticias-y-comunicados/noticia/evita-fraudes-los-tramites-de-los-programas-para-el-bienestar-son-gratuitos-y-sin-intermediarios/",
+    "note": "difícil: usa una entrega presencial como apariencia de legitimidad para cobrar un trámite gratuito, sin enlaces ni urgencia."
+  },
+  {
+    "id": "h21",
+    "kind": "message",
+    "text": "Control vehicular: hay una observación administrativa asociada a su placa. Consulte la evidencia y regularice el registro en https://expediente-vial.example/consulta; el portal requiere una tarjeta bancaria para mostrar la fotografía de la infracción.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_traffic_fine"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/sspc-emite-recomendaciones-para-evitar-fraudes-por-multas-de-transito-falsas-via-sms?idiom=es",
+    "note": "difícil: variante de la alerta de febrero de 2026 que elimina la amenaza de recargos y oculta el cobro como consulta."
+  },
+  {
+    "id": "h22",
+    "kind": "message",
+    "text": "Por la cámara de Marketplace: te adjunto el comprobante de $8,600. En tu cuenta aparece como depósito salvo buen cobro, pero eso es solo una leyenda del banco; entrégasela a la mensajera y yo respondo por cualquier aclaración.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "marketplace_scam"
+    ],
+    "source": "https://www.fgebc.gob.mx/boletines/14554-fge-emite-recomendaciones-para-prevenir-fraudes-en-operaciones-de-compraventa-de-vehiculos",
+    "note": "difícil: adapta a una cámara el mecanismo de pago no firme documentado en 2025 para compraventa de vehículos."
+  },
+  {
+    "id": "h23",
+    "kind": "app",
+    "text": "En la app inventada NébulaRinde, el panel muestra que mis $4,000 se convirtieron en $19,800 en doce días. Al pulsar Retirar aparece: «Para activar retiros transfiera otros $3,000 en criptomonedas al asesor; este importe no puede descontarse del saldo mostrado».",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://seguridad.sonora.gob.mx/acciones/gobierno-de-sonora-previene-por-nueva-modalidad-de-fraude-en-plataformas-de-inversion-en-criptomonedas.html",
+    "note": "Plataforma ficticia de inversión que muestra ganancias y exige nuevos recursos para permitir retirarlas."
+  },
+  {
+    "id": "h24",
+    "kind": "message",
+    "text": "WhatsApp Account Services: recibimos una solicitud de recuperación. Para conservar el historial, abra https://restauracion-chat.example y escriba el código de seis dígitos que acaba de recibir por SMS; nuestro equipo completará la vinculación por usted.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://fiscalia.chihuahua.gob.mx/alerta-policia-cibernetica-sobre-sitios-web-falsos-que-buscan-apoderarse-de-cuentas-de-whatsapp/",
+    "note": "Sitio falso de recuperación basado en la alerta oficial de julio de 2026 sobre apropiación de cuentas."
+  },
+  {
+    "id": "h25",
+    "kind": "message",
+    "text": "No hace falta comprar criptomonedas directamente: nuestro asesor opera por ti. Con $2,500 obtienes $1,000 de utilidad semanal garantizada y puedes retirar el capital íntegro; envía la aportación a la cuenta personal de Vera Santel y te agregamos al grupo privado.",
+    "expected": "fraude",
+    "expectedPatterns": [],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2691-18-09-2025",
+    "note": "difícil: inversión fraudulenta por intermediario con promesa de rentabilidad sin riesgo y sin enlace ni urgencia."
+  },
+  {
+    "id": "h26",
+    "kind": "call",
+    "text": "Recibo una llamada de seguimiento de BBVA por una aclaración que yo abrí. La asesora dice: «Para revisar información de su cuenta, termine esta llamada y marque usted el número del reverso de su tarjeta; solicite seguimiento al folio que ya tiene». No solicita datos ni me transfiere, y al llamar por mi cuenta confirman el seguimiento.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.bbva.mx/personas/centro-de-ayuda/que-es-vishing-como-evitar-estafas.html",
+    "note": "difícil: escenario sintético con verificación independiente y llamada al número de la tarjeta, no solo confianza en el identificador entrante."
+  },
+  {
+    "id": "h27",
+    "kind": "message",
+    "text": "Mi hermano Teo escribe desde el 55 0126 4083, su número de siempre: «¿Me prestas $1,850 para completar la reparación de la bicicleta? A la cuenta que ya tienes guardada; te los regreso el jueves». Le devuelvo la llamada y confirmamos la petición y nuestra palabra familiar.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "difícil: petición familiar sintética de dinero corroborada por un canal conocido y una verificación adicional."
+  },
+  {
+    "id": "h28",
+    "kind": "message",
+    "text": "Me llega una notificación de BBVA: «Compra por $47,860.00 en Muebles Albor; tarjeta terminación 6042». Acabo de comprar un comedor por ese importe y al abrir por mi cuenta la aplicación bancaria encuentro el mismo movimiento; el aviso no pide contestar.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.bbva.mx/educacion-financiera/banca-digital/cuenta-digital-beneficios-en-tu-dia-a-dia.html",
+    "note": "difícil: alerta sintética de monto alto que coincide con una operación realizada y comprobada dentro de la banca."
+  },
+  {
+    "id": "h29",
+    "kind": "message",
+    "text": "Asunto: Buzón Tributario. Tiene información pendiente de consultar. Ingrese a su Buzón Tributario desde https://www.sat.gob.mx para revisarla. Entré escribiendo la dirección en el navegador y encontré el comunicado en Mis comunicados.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://wwwmat.sat.gob.mx/consulta/63850/conoce-que-son-los-mensajes-de-interes-que-te-llegan-a-tu-buzon-tributario",
+    "note": "Aviso sintético coherente con el mecanismo oficial del SAT y corroborado dentro del portal."
+  },
+  {
+    "id": "h30",
+    "kind": "message",
+    "text": "Acabo de registrar mi celular en el Buzón Tributario desde el portal del SAT y recibo: «Código de activación: 482716». Lo capturo en la pantalla de Configuración que yo tenía abierta; nadie me pide enviarlo por mensaje ni dictarlo.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.sat.gob.mx/minisitio/BuzonTributario/",
+    "note": "difícil: código sintético de seis dígitos dentro de una operación iniciada por el usuario, sin entrega a terceros."
+  },
+  {
+    "id": "h31",
+    "kind": "message",
+    "text": "Después de agendar mi consulta en IMSS Digital recibí un correo de confirmación con la misma unidad, consultorio y horario que elegí: «Cita de medicina familiar: 09:20; presente su carnet y la confirmación impresa». No incluye cobros ni pide responder con documentos.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.imss.gob.mx/node/96826",
+    "note": "Confirmación sintética correspondiente al procedimiento oficial de citas del IMSS."
+  },
+  {
+    "id": "h32",
+    "kind": "message",
+    "text": "CFE: su recibo del periodo está disponible para consulta. Puede revisarlo en Mi espacio desde https://www.cfe.gob.mx o en el centro de atención. Abrí mi cuenta por separado y aparecen los mismos $712 que en el recibo impreso.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.cfe.gob.mx/cdn/2019/Archivos/Boletines/166%20-%20bole%20fraudes%20vf.pdf",
+    "note": "Aviso sintético con consulta independiente por un canal que CFE identifica como oficial."
+  },
+  {
+    "id": "h33",
+    "kind": "message",
+    "text": "Estafeta: su envío está disponible para recolección en la sucursal elegida. Lleve una identificación y el número de guía. Es el paquete que pedí enviar a sucursal; al consultar la guía directamente en https://www.estafeta.com aparece disponible en esa misma ubicación.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.estafeta.com",
+    "note": "Notificación sintética de paquetería con envío esperado y estado corroborado por separado."
+  },
+  {
+    "id": "h34",
+    "kind": "call",
+    "text": "Recursos Humanos de Talleres Linde me llama desde el 81 0114 2938 después de las dos entrevistas a las que asistí: «Para firmar el contrato, trae identificación, CURP y constancia fiscal a nuestras oficinas; revisaremos los originales y te los llevas». Confirmé la cita con la recepcionista que conocí durante el proceso; no hay cuota.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "difícil: contratación ficticia legítima que solicita documentos en persona dentro de un proceso previamente verificado."
+  },
+  {
+    "id": "h35",
+    "kind": "message",
+    "text": "Cancelamos el artículo que solicitaste retirar de tu pedido de Amazon; puedes consultar el estado en Tus pedidos. Yo había pedido esa cancelación y, al abrir la aplicación habitual por mi cuenta, el artículo aparece cancelado con el mismo importe.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2038-16-07-2025",
+    "note": "difícil: cancelación sintética solicitada por el comprador y corroborada en el canal oficial, sin códigos ni pagos adicionales."
+  },
+  {
+    "id": "h36",
+    "kind": "message",
+    "text": "Colegio Sauce Claro — Circular 18. La visita al museo cuesta $165 por estudiante; el pago se recibe en la caja del plantel y se entrega recibo. La circular llegó por el canal habitual del grupo y la dirección confirmó el importe en la reunión de familias.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "Escuela y actividad inventadas con cobro presencial confirmado, sin solicitud de datos bancarios."
+  },
+  {
+    "id": "h37",
+    "kind": "message",
+    "text": "Asunto: Recibos de nómina de septiembre. Equipo: los comprobantes ya están en el portal interno que utilizamos cada mes. Ingresen desde el acceso guardado en su equipo; cualquier diferencia se revisará presencialmente con Nómina el miércoles.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "Comunicación laboral sintética que remite al sistema ya conocido sin adjuntos de autenticación ni petición de contraseñas."
+  },
+  {
+    "id": "h38",
+    "kind": "message",
+    "text": "Tía, soy Abril. Cambié de número: ahora es 33 0157 9064. No borres el anterior todavía; el domingo te ayudo a guardar este. Mi tía comprobó el cambio conmigo en persona durante la comida familiar.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "difícil: cambio de número familiar sintético corroborado presencialmente y sin petición económica."
+  },
+  {
+    "id": "h39",
+    "kind": "message",
+    "text": "Telmex: su recibo está disponible en Mi Telmex. Para consultarlo, entre desde https://telmex.com con el acceso que utiliza habitualmente. Revisé el recibo desde mi marcador guardado y coincide con mi plan; el correo no solicita información adicional.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://telmex.com/web/asistencia/protegete-del-phishing",
+    "note": "Aviso sintético compatible con la consulta del recibo en Mi Telmex y verificado por el usuario."
+  },
+  {
+    "id": "h40",
+    "kind": "app",
+    "text": "La app escolar AulaCedro, cuyo nombre es inventado, fue presentada y habilitada durante la inscripción presencial. Muestra: «Autorización para salida al museo: confirme si asistirá su hija; el pago se realiza en la caja escolar». Solo solicita acceso a notificaciones y permite rechazarlo; no pide contactos, fotos ni tarjeta.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "Aplicación escolar sintética con procedencia conocida y permisos proporcionales a su función."
+  }
+]

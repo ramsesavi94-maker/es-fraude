@@ -1,6 +1,7 @@
 // Runs the evaluation set and reports how well the app separates scams from legitimate messages.
 // Usage: npx tsx --env-file=.env scripts/evaluate.ts [eval/cases.json] [--only f01,l03]
 import { readFile, writeFile } from "node:fs/promises";
+import { basename } from "node:path";
 import { analyze } from "../src/analyze.js";
 import type { InputKind, Risk } from "../src/types.js";
 
@@ -83,4 +84,7 @@ const summary = {
 };
 
 console.log("\n" + JSON.stringify(summary, null, 2));
-if (!only) await writeFile("eval/results.json", JSON.stringify({ date: new Date().toISOString(), summary, outcomes }, null, 2));
+if (!only) {
+  const name = basename(file, ".json") === "cases" ? "results.json" : `results-${basename(file, ".json")}.json`;
+  await writeFile(`eval/${name}`, JSON.stringify({ date: new Date().toISOString(), summary, outcomes }, null, 2));
+}

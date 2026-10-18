@@ -1,0 +1,431 @@
+{
+  "date": "2026-10-18T07:34:24.052Z",
+  "summary": {
+    "cases": 40,
+    "fraudDetected": "24/25 (96.0%)",
+    "patternMatch": "12/25 (48.0%)",
+    "legitimateWithoutFalseAlarm": "14/15 (93.3%)",
+    "falseAlarms": [
+      "h40:medio"
+    ],
+    "missedFrauds": [
+      "h14"
+    ],
+    "wrongPattern": [
+      "h01:-",
+      "h02:marketplace_scam",
+      "h03:-",
+      "h04:-",
+      "h05:bank_impersonation",
+      "h06:bank_impersonation",
+      "h07:-",
+      "h10:-",
+      "h15:fake_delivery",
+      "h23:-",
+      "h24:-",
+      "h25:-"
+    ],
+    "errors": [
+      "h14"
+    ],
+    "latencyMs": {
+      "median": 8507,
+      "p90": 10102
+    }
+  },
+  "outcomes": [
+    {
+      "id": "h01",
+      "expected": "fraude",
+      "risk": "medio",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 10438
+    },
+    {
+      "id": "h02",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [
+        "marketplace_scam"
+      ],
+      "ms": 9142
+    },
+    {
+      "id": "h03",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 9126
+    },
+    {
+      "id": "h04",
+      "expected": "fraude",
+      "risk": "medio",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 10102
+    },
+    {
+      "id": "h05",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [
+        "bank_impersonation"
+      ],
+      "ms": 9228
+    },
+    {
+      "id": "h06",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [
+        "bank_impersonation"
+      ],
+      "ms": 8507
+    },
+    {
+      "id": "h07",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 9836
+    },
+    {
+      "id": "h08",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "family_impersonation"
+      ],
+      "ms": 8808
+    },
+    {
+      "id": "h09",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "bank_impersonation"
+      ],
+      "ms": 4896
+    },
+    {
+      "id": "h10",
+      "expected": "fraude",
+      "risk": "medio",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 5736
+    },
+    {
+      "id": "h11",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "sat_impersonation"
+      ],
+      "ms": 4156
+    },
+    {
+      "id": "h12",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "bank_impersonation"
+      ],
+      "ms": 9486
+    },
+    {
+      "id": "h13",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "virtual_kidnapping"
+      ],
+      "ms": 7098
+    },
+    {
+      "id": "h14",
+      "expected": "fraude",
+      "risk": "error",
+      "correct": false,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 8045,
+      "error": "Unexpected token '«', ...\" \"quote\": «Somos qui\"... is not valid JSON"
+    },
+    {
+      "id": "h15",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [
+        "fake_delivery"
+      ],
+      "ms": 9574
+    },
+    {
+      "id": "h16",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "loan_app_extortion"
+      ],
+      "ms": 8646
+    },
+    {
+      "id": "h17",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "fake_job_offer"
+      ],
+      "ms": 6272
+    },
+    {
+      "id": "h18",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "fake_delivery"
+      ],
+      "ms": 6484
+    },
+    {
+      "id": "h19",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "fake_prize"
+      ],
+      "ms": 7493
+    },
+    {
+      "id": "h20",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "fake_government_aid"
+      ],
+      "ms": 5871
+    },
+    {
+      "id": "h21",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "fake_traffic_fine"
+      ],
+      "ms": 6434
+    },
+    {
+      "id": "h22",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": true,
+      "predictedPatterns": [
+        "marketplace_scam"
+      ],
+      "ms": 12260
+    },
+    {
+      "id": "h23",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 9550
+    },
+    {
+      "id": "h24",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 9519
+    },
+    {
+      "id": "h25",
+      "expected": "fraude",
+      "risk": "alto",
+      "correct": true,
+      "patternHit": false,
+      "predictedPatterns": [],
+      "ms": 7524
+    },
+    {
+      "id": "h26",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 6151
+    },
+    {
+      "id": "h27",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 11259
+    },
+    {
+      "id": "h28",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 6160
+    },
+    {
+      "id": "h29",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 8595
+    },
+    {
+      "id": "h30",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 7284
+    },
+    {
+      "id": "h31",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 5032
+    },
+    {
+      "id": "h32",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 6343
+    },
+    {
+      "id": "h33",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 5749
+    },
+    {
+      "id": "h34",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 8941
+    },
+    {
+      "id": "h35",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 6390
+    },
+    {
+      "id": "h36",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 6230
+    },
+    {
+      "id": "h37",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 9262
+    },
+    {
+      "id": "h38",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 8548
+    },
+    {
+      "id": "h39",
+      "expected": "legitimo",
+      "risk": "sin_senales",
+      "correct": true,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 6524
+    },
+    {
+      "id": "h40",
+      "expected": "legitimo",
+      "risk": "medio",
+      "correct": false,
+      "patternHit": null,
+      "predictedPatterns": [],
+      "ms": 8767
+    }
+  ]
+}
