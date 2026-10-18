@@ -1,0 +1,24 @@
+{
+  "name": "es-fraude",
+  "version": "1.0.0",
+  "description": "A second opinion before you fall for a scam: Nemotron + Tavily check suspicious messages against official Mexican sources",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typecheck": "tsc",
+    "try": "tsx --env-file=.env scripts/try.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@hono/node-server": "^2.1.5",
+    "hono": "^4.13.13"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
