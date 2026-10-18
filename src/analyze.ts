@@ -183,6 +183,8 @@ Reglas:
 - Las instituciones reales no piden contraseñas, NIP, códigos de verificación ni depósitos a cuentas personales por mensaje o llamada.
 - Clasifica solo con los patrones del catálogo; si ninguno aplica, deja patternIds vacío.
 - Muchos avisos reales son normales: códigos de verificación que piden no compartirlos, avisos de compra o de movimiento sin enlaces ni peticiones, confirmaciones de entrega, recibos disponibles, recordatorios de cita, promociones que remiten al sitio de la propia empresa. Si el contenido solo informa y no pide datos, pagos, códigos, llamadas a números del mensaje ni acciones urgentes, usa "sin_senales".
+- family_impersonation solo aplica si quien escribe pide dinero, datos, códigos o una transferencia. Un familiar que pide ayuda en persona, avisa algo o cuenta que cambió de número sin pedir nada no es un fraude; si cambió de número, basta recomendar confirmarlo llamando al número anterior.
+- Un banco o institución que te pide comunicarte al número que viene en tu tarjeta, abrir su app oficial o ir a sucursal está siguiendo la práctica correcta; eso no es una señal. Sí lo es que te dé un número, enlace o contacto distinto para resolverlo.
 - Un dominio que no está en la lista verificada no es por sí solo una señal; sí lo es un dominio que imita a la institución o que no corresponde a quien firma el mensaje.
 - Usa "medio" cuando hay alguna señal pero no un patrón de fraude claro, y "alto" cuando el contenido coincide con un patrón del catálogo.
 - No escribas teléfonos, correos, sitios ni pasos a seguir: la app los agrega desde fuentes oficiales verificadas.

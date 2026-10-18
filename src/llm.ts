@@ -27,7 +27,8 @@ export interface ChatOptions {
   jsonMode?: boolean;
 }
 
-export async function chat(model: string, messages: ChatMessage[], { maxTokens = 1500, temperature = 0.2, jsonMode = false }: ChatOptions = {}): Promise<ChatResult> {
+// Temperature 0: the same message should get the same verdict every time.
+export async function chat(model: string, messages: ChatMessage[], { maxTokens = 1500, temperature = 0, jsonMode = false }: ChatOptions = {}): Promise<ChatResult> {
   const base = process.env.NEBIUS_BASE_URL ?? "https://api.tokenfactory.nebius.com/v1";
   const started = Date.now();
   const res = await fetch(`${base}/chat/completions`, {
