@@ -32,7 +32,7 @@ entrada (texto | captura | descripción de llamada | nombre de app)
 ```
 
 - Token Factory: `https://api.tokenfactory.nebius.com/v1` (compatible con OpenAI).
-- Modelos: Ultra para el veredicto, Super VL para capturas, Nano para extracción rápida.
+- Modelos: Ultra para el veredicto, Super VL para capturas, Super para extracción (en pruebas fue más rápido y preciso que Nano).
 - Stack: TypeScript, Node 24, Hono, página web ligera pensada para celular.
 - Privacidad: no se guardan mensajes ni capturas; Tavily solo recibe nombres de instituciones, dominios y apps, nunca el mensaje completo.
 
@@ -50,7 +50,7 @@ entrada (texto | captura | descripción de llamada | nombre de app)
 |---|---|
 | 18-10 | Plan, repo, primer análisis de punta a punta con Ultra |
 | 19-10 | Catálogo de Codex integrado; lectura de capturas con Super VL |
-| 20-10 | Verificación con Tavily y lista de dominios oficiales |
+| 20-10 | Verificación con Tavily y lista de dominios oficiales (hecha el 18-10) |
 | 21-10 | Veredicto final: reglas de "nunca es seguro", borrador de denuncia |
 | 22-10 | Interfaz web para celular |
 | 23-10 | Conjunto de evaluación: 30 mensajes fraudulentos y 15 legítimos; medir aciertos |

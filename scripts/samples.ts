@@ -17,16 +17,18 @@ const SAMPLES: { label: string; text: string }[] = [
   },
   {
     label: "montadeudas",
-    text: "PRESTAMO EXPRESS: tu deuda de $2,300 vence HOY. Si no pagas antes de las 6pm enviaremos a todos tus contactos que eres un deudor y un estafador, con tu foto. Paga al 55 1234 5678 por transferencia.",
+    text: "PRESTAMO EXPRESS: tu deuda de $2,300 vence HOY. Si no pagas antes de las 6pm enviaremos a todos tus contactos que eres un deudor y un estafador, con tu foto. Paga al 55 4821 9037 por transferencia.",
   },
 ];
 
 for (const s of SAMPLES) {
   const started = Date.now();
-  const { verdict } = await analyze({ kind: "message", text: s.text });
+  const { verdict, checks, trace } = await analyze({ kind: "message", text: s.text });
   console.log(`\n### ${s.label} → ${verdict.risk.toUpperCase()} (${Date.now() - started} ms)`);
   console.log(verdict.summary);
   console.log(`Patrones: ${verdict.patterns.map((p) => p.id).join(", ") || "(ninguno)"}`);
   for (const sig of verdict.signals) console.log(`  - ${sig.signal} «${sig.quote}»`);
+  for (const c of checks) console.log(`  ✓ ${c.check}: ${c.result}${c.evidence?.length ? ` [${c.evidence.map((e) => e.url).join(", ")}]` : ""}`);
+  console.log(`  ⏱ ${trace.map((t) => `${t.step} ${t.ms}ms`).join(" | ")}`);
   console.log(`Canales: ${verdict.channels.map((c) => `${c.name} ${c.contact}`).join(" | ")}`);
 }

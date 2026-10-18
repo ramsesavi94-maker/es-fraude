@@ -15,6 +15,7 @@ export interface Extraction {
   text: string;
   channel: string | null;
   claimedEntity: string | null;
+  entityType: "institucion" | "empresa" | "persona" | "desconocido";
   urls: string[];
   phones: string[];
   amounts: string[];
@@ -25,7 +26,8 @@ export interface Extraction {
 export interface Check {
   check: string;
   result: string;
-  sourceUrl?: string;
+  /** Pages that back the result, when it came from a search. */
+  evidence?: { title: string; url: string; excerpt: string }[];
 }
 
 export type Risk = "alto" | "medio" | "sin_senales";
