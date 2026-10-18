@@ -53,7 +53,7 @@ entrada (texto | captura | descripción de llamada | nombre de app)
 | 20-10 | Verificación con Tavily y lista de dominios oficiales (hecha el 18-10) |
 | 21-10 | Veredicto final: reglas de "nunca es seguro", borrador de denuncia |
 | 22-10 | Interfaz web para celular (primera versión el 18-10) |
-| 23-10 | Conjunto de evaluación: 30 mensajes fraudulentos y 15 legítimos; medir aciertos |
+| 23-10 | Conjunto de evaluación (hecho el 18-10: 30/30 fraudes, 15/15 legítimos tras ajustes). Falta un segundo conjunto no visto para medir sin sesgo |
 | 24-10 | Despliegue público (Nebius Serverless si es posible) |
 | 25-10 | Pruebas con 5 personas reales; ajustes |
 | 26-10 | Ajustes con lo aprendido |

@@ -4,7 +4,7 @@
   "description": "A second opinion before you fall for a scam: Nemotron + Tavily check suspicious messages against official Mexican sources",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsx --test test/*.test.ts",
     "typecheck": "tsc",
     "try": "tsx --env-file=.env scripts/try.ts",
     "dev": "tsx --env-file=.env src/server.ts",

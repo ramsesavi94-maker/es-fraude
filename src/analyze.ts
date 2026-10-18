@@ -1,6 +1,6 @@
 import { CHANNELS, type ChannelId, GENERAL_CHANNELS, GENERAL_STEPS, PATTERNS } from "./catalog.js";
 import { chat, MODELS, parseJson } from "./llm.js";
-import { hostOf, officialOwner } from "./official.js";
+import { brandMatch, hostOf, officialOwner, registrableDomain } from "./official.js";
 import { OFFICIAL_SEARCH_DOMAINS, search, tavilyEnabled } from "./tavily.js";
 import type { Analysis, AnalysisInput, Check, Extraction, ModelVerdict, Verdict } from "./types.js";
 
@@ -70,10 +70,16 @@ async function verify(extraction: Extraction, isApp: boolean, trace: Trace): Pro
     const host = hostOf(url);
     if (!host) continue;
     const owner = officialOwner(host);
+    const brand = brandMatch(host, extraction.claimedEntity);
     if (owner) {
       checks.push({ check: `Enlace ${host}`, result: `Pertenece a un dominio oficial de ${owner}.` });
+    } else if (brand === "imitates") {
+      checks.push({ check: `Enlace ${host}`, result: `Imita el nombre de ${extraction.claimedEntity}, pero no es su dominio: el dominio real es ${registrableDomain(host)}. Es una técnica común de fraude.` });
+      unofficialHosts.push(host);
+    } else if (brand === "matches") {
+      checks.push({ check: `Enlace ${host}`, result: `El dominio coincide con el nombre de ${extraction.claimedEntity}. No está en nuestra lista verificada; aun así, lo más seguro es entrar tú mismo escribiendo la dirección.` });
     } else {
-      checks.push({ check: `Enlace ${host}`, result: "No pertenece a ningún dominio oficial conocido de bancos o gobierno." });
+      checks.push({ check: `Enlace ${host}`, result: `El dominio (${registrableDomain(host)}) no corresponde a la institución que firma el mensaje ni a un banco o dependencia de gobierno verificados.` });
       unofficialHosts.push(host);
     }
   }
@@ -177,6 +183,9 @@ Reglas:
 - Nunca digas que algo es seguro, legítimo o confiable. Si no hay señales, usa risk "sin_senales".
 - Las instituciones reales no piden contraseñas, NIP, códigos de verificación ni depósitos a cuentas personales por mensaje o llamada.
 - Clasifica solo con los patrones del catálogo; si ninguno aplica, deja patternIds vacío.
+- Muchos avisos reales son normales: códigos de verificación que piden no compartirlos, avisos de compra o de movimiento sin enlaces ni peticiones, confirmaciones de entrega, recibos disponibles, recordatorios de cita, promociones que remiten al sitio de la propia empresa. Si el contenido solo informa y no pide datos, pagos, códigos, llamadas a números del mensaje ni acciones urgentes, usa "sin_senales".
+- Un dominio que no está en la lista verificada no es por sí solo una señal; sí lo es un dominio que imita a la institución o que no corresponde a quien firma el mensaje.
+- Usa "medio" cuando hay alguna señal pero no un patrón de fraude claro, y "alto" cuando el contenido coincide con un patrón del catálogo.
 - No escribas teléfonos, correos, sitios ni pasos a seguir: la app los agrega desde fuentes oficiales verificadas.
 - Escribe en español claro, para cualquier persona, sin tecnicismos. No des asesoría legal ni financiera.
 
@@ -241,10 +250,30 @@ function compose(v: ModelVerdict): Verdict {
   };
 }
 
+/**
+ * A lender's name alone carries no warning signs, but an unverified lender is
+ * exactly the montadeudas risk: ask the person to check the registry first,
+ * without calling the app illegal.
+ */
+function unverifiedApp(v: Verdict): Verdict {
+  return {
+    ...v,
+    risk: "medio",
+    summary: "No pude verificar que esta app o empresa esté registrada como financiera. Antes de darle tus datos o aceptar un préstamo, busca su razón social en SIPRES de CONDUSEF; las apps de préstamo sin registro son la vía más común de los montadeudas.",
+    whatToDo: [
+      "Busca la razón social de la empresa (no solo el nombre de la app) en SIPRES de CONDUSEF.",
+      "No le des acceso a tus contactos, fotos ni galería.",
+      "Si ya te están amenazando, guarda capturas y repórtalo al 089.",
+    ],
+    channels: [CHANNELS.sipres, CHANNELS.condusef, CHANNELS["089"]],
+  };
+}
+
 export async function analyze(input: AnalysisInput): Promise<Analysis> {
   const trace: Trace = [];
   const extraction = await extract(input, trace);
   const checks = await verify(extraction, input.kind === "app", trace);
-  const verdict = compose(await reason(extraction, checks, trace));
+  let verdict = compose(await reason(extraction, checks, trace));
+  if (input.kind === "app" && verdict.risk === "sin_senales") verdict = unverifiedApp(verdict);
   return { extraction, checks, verdict, trace };
 }

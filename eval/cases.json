@@ -1,0 +1,471 @@
+[
+  {
+    "id": "f01",
+    "kind": "message",
+    "text": "SAT: tienes adeudo fiscal pendiente!! evita embargo hoy pagando $1,280 en https://adeudo-fiscal.invalid/pago",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "sat_impersonation"
+    ],
+    "source": "https://www.condusef.gob.mx/index.php?idc=2451&idcat=3&p=contenido",
+    "note": "Suplanta al SAT y utiliza una amenaza para dirigir el pago a un dominio ficticio ajeno a la institución."
+  },
+  {
+    "id": "f02",
+    "kind": "message",
+    "text": "Servicio de Administración Tributaria. Su devolución está disponible; para autorizar el depósito, valide su contraseña y los datos de su tarjeta en https://sat.gob.mx.devoluciones-fiscales.invalid/validacion.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "sat_impersonation"
+    ],
+    "source": "https://www.condusef.gob.mx/index.php?idc=2451&idcat=3&p=contenido",
+    "note": "difícil: el tono formal y el subdominio imitan al SAT, pero el dominio ficticio y la solicitud de credenciales corresponden a una suplantación."
+  },
+  {
+    "id": "f03",
+    "kind": "message",
+    "text": "Aviso SAT: su RFC sera suspendido por inconsistencias. Envie su contraseña y archivo de e.firma al asesor por WhatsApp 55 0124 6789 para regularizar HOY.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "sat_impersonation"
+    ],
+    "source": "https://www.condusef.gob.mx/index.php?idc=2451&idcat=3&p=contenido",
+    "note": "La falsa regularización fiscal busca obtener credenciales mediante un contacto ajeno al SAT."
+  },
+  {
+    "id": "f04",
+    "kind": "message",
+    "text": "BBVA: detectamos compra x $8,750. Si NO la reconoce cancele aqui https://bloqueo-bancario.invalid e ingrese su tarjeta, NIP y token. Tiene 10 min.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "bank_impersonation"
+    ],
+    "source": "https://revista.condusef.gob.mx/usuario-inteligente/tu-bolsillo/2023/02/cuidate-de-los-estafadores-digitales/",
+    "note": "La supuesta cancelación de un cargo conduce a una página ficticia que solicita secretos bancarios."
+  },
+  {
+    "id": "f05",
+    "kind": "message",
+    "text": "Buenas tardes. Soy Adriana Ledesma, del área de prevención de fraudes de su banco. Para concluir el bloqueo preventivo de su tarjeta, responda a este mensaje con el código de seguridad que acaba de recibir.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "bank_impersonation"
+    ],
+    "source": "https://revista.condusef.gob.mx/usuario-inteligente/tu-bolsillo/2023/02/cuidate-de-los-estafadores-digitales/",
+    "note": "difícil: no contiene enlaces ni errores ortográficos, pero la supuesta ejecutiva solicita un código confidencial."
+  },
+  {
+    "id": "f06",
+    "kind": "call",
+    "text": "Me llamó una grabación que dijo ser de mi banco y anunció un intento de compra; me indicó llamar al 33 0146 8023 y teclear mi tarjeta completa y su código de seguridad para cancelarlo.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "bank_impersonation"
+    ],
+    "source": "https://www.condusef.gob.mx/documentos/95760_CONDUGUIAS-PROTEGETUIDENTIDAD.pdf",
+    "note": "Reproduce el vishing con una grabación que deriva a un teléfono ficticio para capturar datos de la tarjeta."
+  },
+  {
+    "id": "f07",
+    "kind": "call",
+    "text": "Me dijeron que tenían secuestrada a mi hija y escuché a alguien llorando; exigieron que depositara $30,000 de inmediato y que no colgara ni intentara llamarla.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "virtual_kidnapping",
+      "phone_extortion"
+    ],
+    "source": "https://www.gob.mx/epn/policiafederal/articulos/conoce-los-tipos-de-extorsion?idiom=es",
+    "note": "El caso recrea un secuestro simulado que usa llanto, amenazas y aislamiento telefónico para exigir dinero."
+  },
+  {
+    "id": "f08",
+    "kind": "call",
+    "text": "Me dijeron que mi teléfono estaba vinculado con un grupo delictivo y que, para no hacerme daño, debía salir de casa, alojarme solo en un hotel y dejar de contestar a mi familia mientras ellos me daban instrucciones.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "virtual_kidnapping",
+      "phone_extortion"
+    ],
+    "source": "https://fiscalia.chihuahua.gob.mx/alerta-fiscalia-occidente-por-nueva-modalidad-de-secuestro-virtual-y-extorsion-telefonica/",
+    "note": "La amenaza busca aislar e incomunicar a la víctima como parte de un secuestro virtual."
+  },
+  {
+    "id": "f09",
+    "kind": "call",
+    "text": "Me llamó un hombre que dijo controlar la zona de mi negocio; aseguró que me estaban vigilando y exigió $5,000 por protección antes de cerrar, o irían a lastimarme.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "phone_extortion"
+    ],
+    "source": "https://www.gob.mx/epn/policiafederal/articulos/conoce-los-tipos-de-extorsion?idiom=es",
+    "note": "La llamada exige dinero mediante amenazas y una supuesta vigilancia del negocio."
+  },
+  {
+    "id": "f10",
+    "kind": "call",
+    "text": "Me dijeron que debía un crédito que nunca contraté y que ya venían a llevarse mis muebles; me exigieron depositar $2,400 en una tienda y mantener la llamada hasta mandarles el comprobante.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "phone_extortion"
+    ],
+    "source": "https://www.gob.mx/epn/policiafederal/articulos/conoce-los-tipos-de-extorsion?idiom=es",
+    "note": "Utiliza una deuda inventada y una amenaza de despojo inmediato para obtener un depósito."
+  },
+  {
+    "id": "f11",
+    "kind": "app",
+    "text": "CrediCentella Nopal",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "loan_app_extortion"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2881-06-10-25",
+    "note": "App ficticia que representa préstamos con acceso abusivo a contactos y amenazas de cobranza; el nombre solo no permite inferir el fraude."
+  },
+  {
+    "id": "f12",
+    "kind": "app",
+    "text": "LanaRelámpago Colibrí",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "loan_app_extortion"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2881-06-10-25",
+    "note": "App ficticia que representa depósitos inferiores a lo ofrecido y cobros extorsivos; la etiqueta es una premisa del caso y no una conclusión deducible del nombre."
+  },
+  {
+    "id": "f13",
+    "kind": "app",
+    "text": "PesoVeloz Biznaga",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "loan_app_extortion"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2881-06-10-25",
+    "note": "App ficticia que representa el uso de fotos personales para intimidar al solicitante; la alerta respalda el modus operandi y no este nombre inventado."
+  },
+  {
+    "id": "f14",
+    "kind": "app",
+    "text": "PréstamoFlash Xólotl",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "loan_app_extortion"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2881-06-10-25",
+    "note": "App ficticia que representa préstamos rápidos con intereses abusivos y hostigamiento a contactos; no es una empresa denunciada ni un fraude identificable solo por su nombre."
+  },
+  {
+    "id": "f15",
+    "kind": "message",
+    "text": "VACANTES DESDE CASA!! empaca accesorios y gana $4,500 x semana sin experiencia. Solo deposita $390 de envio del material y empiezas mañana. Informes 55 0235 7913.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_job_offer"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/index.php/comunicacion/nota/COM1374-12-05-2025",
+    "note": "La falsa oferta laboral condiciona el inicio del trabajo a un pago anticipado."
+  },
+  {
+    "id": "f16",
+    "kind": "message",
+    "text": "Estimada Daniela Robles: su perfil fue seleccionado para la vacante de auxiliar administrativo. Para reservar la entrevista, deberá cubrir $650 por validación de expediente mediante transferencia a la cuenta personal del coordinador.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_job_offer"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/index.php/comunicacion/nota/COM1374-12-05-2025",
+    "note": "difícil: el mensaje profesional y sin enlace encubre un cobro previo para acceder a una entrevista."
+  },
+  {
+    "id": "f17",
+    "kind": "message",
+    "text": "Ya ganaste $80 dando likes 👍 Para retirar tus $2,800 acumulados debes recargar $700 y subir a tarea VIP. No pierdas tu puesto, hoy cerramos pagos!",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_job_offer"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/sspc-alerta-sobre-fraudes-por-recompensas-falsas-en-redes-sociales",
+    "note": "El supuesto trabajo por tareas usa pagos iniciales pequeños para después exigir dinero que desbloquee ganancias ficticias."
+  },
+  {
+    "id": "f18",
+    "kind": "message",
+    "text": "Tu paquete no pudo entregarse por direccion incompleta. Paga $19.90 para reenvio y confirma tu tarjeta en https://reparto-pendiente.invalid/mx",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_delivery"
+    ],
+    "source": "https://revista.condusef.gob.mx/usuario-inteligente/tu-bolsillo/2025/10/no-caigas/",
+    "note": "La entrega supuestamente fallida sirve de pretexto para obtener datos bancarios mediante una página ficticia."
+  },
+  {
+    "id": "f19",
+    "kind": "message",
+    "text": "AVISO DE PAQUETERIA: su envio esta retenido, ultimo intento hoy. Actualize domicilio y pague la liberacion en https://liberar-envio.invalid/guia o sera devuelto.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_delivery"
+    ],
+    "source": "https://revista.condusef.gob.mx/usuario-inteligente/tu-bolsillo/2025/10/no-caigas/",
+    "note": "Una notificación falsa de paquetería presiona para pagar y entregar información fuera de los canales oficiales."
+  },
+  {
+    "id": "f20",
+    "kind": "message",
+    "text": "FELICIDADES 🎉 tu numero gano $75,000 en nuestro sorteo sorpresa!! reclama en https://premio-asignado.invalid y captura tu tarjeta con CVV para recibirlo.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_prize"
+    ],
+    "source": "https://www.condusef.gob.mx/index.php?idc=2451&idcat=3&p=contenido",
+    "note": "El premio no solicitado se utiliza como señuelo para capturar datos financieros."
+  },
+  {
+    "id": "f21",
+    "kind": "call",
+    "text": "Me dijeron que mi línea había ganado un automóvil en un sorteo navideño al que no me inscribí; para liberarlo, debía depositar $3,500 por trámites ese mismo día y enviar el comprobante al 33 0257 9134.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_prize"
+    ],
+    "source": "https://www.altoalfraudetelefonico.gob.mx/ABC/boletin_Mes2025.php?mes=DICIEMBRE",
+    "note": "La llamada ofrece un premio inexistente y exige un pago anticipado para liberarlo."
+  },
+  {
+    "id": "f22",
+    "kind": "message",
+    "text": "Prima soy tu primo del norte, cambie de cel. Ya mande mis maletas con regalos pa ustedes pero aduana las detuvo. Prestame $2,100 para liberarlas y llegando te los doy, no puedo hablar ahorita.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "family_impersonation",
+      "fake_delivery"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/2365-la-policia-cibernetica-de-la-ssc-alerta-la-ciudadania-de-una-nueva-modalidad-de-estafa-por-la-red-denominada-la-valija-del-tesoro-y-emite-recomendaciones-para-evitarla",
+    "note": "Suplanta a un familiar y solicita dinero para liberar un envío inventado, como en la estafa de la valija."
+  },
+  {
+    "id": "f23",
+    "kind": "message",
+    "text": "Hola, tía. Soy Mauricio. Antes de mi regreso envié una maleta con regalos para ustedes. La agencia solicita $1,850 para entregarla; por favor, transfiérelos a la cuenta de su gestor y envíame el comprobante.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "family_impersonation",
+      "fake_delivery"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/2365-la-policia-cibernetica-de-la-ssc-alerta-la-ciudadania-de-una-nueva-modalidad-de-estafa-por-la-red-denominada-la-valija-del-tesoro-y-emite-recomendaciones-para-evitarla",
+    "note": "difícil: la suplantación familiar usa redacción cuidada y ningún enlace para pedir el pago de una entrega ficticia."
+  },
+  {
+    "id": "f24",
+    "kind": "message",
+    "text": "BIENESTAR te autoriso credito de $18,000 a cuenta de tu pension ✅ manda foto de tu tarjeta por ambos lados y NIP para activar el deposito.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_government_aid"
+    ],
+    "source": "https://www.gob.mx/bienestar/prensa/bienestar-no-entrega-prestamos-ni-creditos-a-cuenta-de-los-programas-del-bienestar",
+    "note": "Bienestar advierte que no ofrece estos préstamos por mensajería ni solicita el NIP para entregarlos."
+  },
+  {
+    "id": "f25",
+    "kind": "message",
+    "text": "Ya esta disponible BONO MUJER BIENESTAR 💜 registra tu CURP e INE en https://bono-mujer-registro.invalid y paga $250 de activacion, quedan pocos lugares.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_government_aid"
+    ],
+    "source": "https://www.gob.mx/bienestar/prensa/secretaria-de-bienestar-no-otorga-ningun-tipo-de-credito-o-bono-a-cuenta-de-las-pensiones-o-programas-para-el-bienestar-405667?idiom=es",
+    "note": "Promueve un bono falso y cobra por un supuesto trámite de Bienestar mediante una página ficticia."
+  },
+  {
+    "id": "f26",
+    "kind": "message",
+    "text": "CDMX MULTA PENDIENTE: pague $970 antes de 2 horas para evitar inmovilizacion de su vehiculo. Consulte y liquide aqui https://multa-vial-pago.invalid",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_traffic_fine"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/sspc-emite-recomendaciones-para-evitar-fraudes-por-multas-de-transito-falsas-via-sms?idiom=es",
+    "note": "La falsa infracción combina amenaza de sanción inmediata con un enlace de cobro ajeno al gobierno."
+  },
+  {
+    "id": "f27",
+    "kind": "message",
+    "text": "Secretaría de Administración y Finanzas. Se encuentra disponible una infracción asociada a su vehículo. Consulte el expediente y cubra el importe para evitar recargos en https://finanzas.cdmx.gob.mx.consulta-vial.invalid.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "fake_traffic_fine"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/la-sspc-emite-recomendaciones-ante-mensajes-falsos-sobre-multas-de-transito?idiom=es",
+    "note": "difícil: el lenguaje administrativo y el subdominio aparente ocultan que la dirección ficticia no pertenece a cdmx.gob.mx."
+  },
+  {
+    "id": "f28",
+    "kind": "message",
+    "text": "Si sigue la consola de Marketplace, nueva en $1,200!! No la puedo mostrar, estoy fuera. Depositame $400 de apartado y te la mando hoy, hay otros 5 interesados.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "marketplace_scam"
+    ],
+    "source": "https://www.sonora.gob.mx/gobierno/acciones/dependencias/recomienda-unidad-cibernetica-extremar-medidas-de-prevencion-al-comprar-por-facebook",
+    "note": "El escenario recrea una venta inexistente que exige un anticipo antes de permitir verificar el producto."
+  },
+  {
+    "id": "f29",
+    "kind": "message",
+    "text": "Ya quedo la transferencia por tu laptop, te mando captura. Aunque aun no salga en tu saldo, entregasela al chofer que ya va llegando; el banco tarda pero el comprobante ya garantiza el pago.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "marketplace_scam"
+    ],
+    "source": "https://www.municipiochihuahua.gob.mx/CCS/Prensa/Alerta_Polic%C3%ADa_Cibern%C3%A9tica_del_Municipio_por_nueva_modalidad_de_fraudes_en_Facebook_o_Marketplace",
+    "note": "El comprador utiliza un comprobante falso y presiona para recibir la mercancía sin que exista un abono verificable."
+  },
+  {
+    "id": "f30",
+    "kind": "message",
+    "text": "Hola por el carro de Marketplace: con $6,000 de enganche te autorizamos sin buro. Deposita primero y despues te damos ubicacion para verlo, fotos y papeles solo se liberan con el pago.",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "marketplace_scam"
+    ],
+    "source": "https://www.sonora.gob.mx/gobierno/acciones/dependencias/recomienda-unidad-cibernetica-extremar-medidas-de-prevencion-al-comprar-por-facebook",
+    "note": "La venta ficticia condiciona cualquier verificación del vehículo a una transferencia anticipada."
+  },
+  {
+    "id": "l01",
+    "kind": "message",
+    "text": "SAT: Tienes un nuevo mensaje en tu Buzón Tributario. Ingresa directamente a https://www.sat.gob.mx y consulta el apartado Buzón Tributario.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.sat.gob.mx/minisitio/BuzonTributario/servicios_disponibles.html",
+    "note": "Aviso típico del Buzón Tributario que remite al portal oficial y no solicita datos por mensaje."
+  },
+  {
+    "id": "l02",
+    "kind": "message",
+    "text": "Banamex: Tu código de verificación para la operación que solicitaste es 482716. No lo compartas con nadie. Captúralo únicamente en la aplicación donde iniciaste la operación.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.banamex.com/centro-de-seguridad",
+    "note": "Ejemplo sintético de un código solicitado por el usuario que protege su confidencialidad y no pide enviarlo a otra persona."
+  },
+  {
+    "id": "l03",
+    "kind": "message",
+    "text": "BBVA: Compra por $286.50 MXN en ABARROTES NUBE CLARA con tu tarjeta terminación 4821, hoy a las 13:42.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.bbva.mx/personas/landings/04/activa-alertas-bbva.html",
+    "note": "Notificación típica de un movimiento bancario, con comercio e importe ficticios, que no contiene enlaces ni solicitudes."
+  },
+  {
+    "id": "l04",
+    "kind": "message",
+    "text": "IMSS: Tu cita de Medicina Familiar quedó confirmada para el 22 de octubre a las 09:30, consultorio 4 de tu UMF. Recuerda llevar tu Carnet de Citas Médicas y la confirmación impresa.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.imss.gob.mx/node/96826",
+    "note": "Confirmación sintética que recuerda una cita previamente solicitada y la documentación indicada por el IMSS, sin pedir pagos."
+  },
+  {
+    "id": "l05",
+    "kind": "message",
+    "text": "Estafeta: Tu envío con guía 0000000000000000004821 fue entregado hoy a las 12:15 en el domicilio de destino; recibió Elena Prado. Consulta el seguimiento en https://www.estafeta.com/rastrear-envio.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.estafeta.com/confirmaciones-y-excepciones",
+    "note": "Confirmación típica de entrega con guía y destinataria ficticias, respaldada por el servicio oficial de notificaciones."
+  },
+  {
+    "id": "l06",
+    "kind": "message",
+    "text": "Mijo, ya está la comida. Trae tortillas cuando vengas y avísame si también viene Paula.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "Es una coordinación familiar cotidiana sin solicitudes de información confidencial ni engaño económico."
+  },
+  {
+    "id": "l07",
+    "kind": "message",
+    "text": "Equipo, movimos la junta de seguimiento a las 11:30 en la sala de siempre. Lleven sus pendientes de la semana; la minuta está en la carpeta compartida.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "Es un aviso laboral interno sobre una reunión habitual que no exige pagos ni credenciales."
+  },
+  {
+    "id": "l08",
+    "kind": "message",
+    "text": "Liverpool: Encuentra descuentos en artículos seleccionados. Consulta precios, disponibilidad y condiciones en nuestra tienda o en https://www.liverpool.com.mx/tienda.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.liverpool.com.mx/tienda?s=promociones",
+    "note": "Promoción comercial típica que dirige al sitio oficial sin prometer premios ni pedir datos por mensaje."
+  },
+  {
+    "id": "l09",
+    "kind": "message",
+    "text": "CFE: Tu recibo está disponible para consulta. Revisa el importe y la fecha límite de pago entrando directamente a https://app.cfe.mx, en Mi CFE.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://app.cfe.mx/Aplicaciones/CCFE/MiEspacio/CambioEnInstalaciones.aspx",
+    "note": "Aviso típico de disponibilidad del recibo que remite al servicio oficial de consulta y pago."
+  },
+  {
+    "id": "l10",
+    "kind": "message",
+    "text": "Transferencia SPEI realizada: $850.00 MXN a tu cuenta de ahorro terminación 7314. Concepto: ahorro propio. Referencia: 4821063. Puedes consultar el comprobante en el historial de tu banca.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.banxico.org.mx/servicios/mi-spei_-transferencias-ban.html",
+    "note": "Confirmación sintética de una transferencia propia autorizada, cuyos datos pueden contrastarse con el historial bancario y el CEP."
+  },
+  {
+    "id": "l11",
+    "kind": "message",
+    "text": "Hermana, ¿puedes pasar por mí ya? Se me ponchó la bici y está empezando a llover. Estoy afuera de la panadería donde desayunamos ayer; márcame y te explico.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "difícil: la urgencia es cotidiana, pide ayuda presencial e invita a verificar por llamada sin solicitar dinero."
+  },
+  {
+    "id": "l12",
+    "kind": "message",
+    "text": "Banamex: Se registró un cargo de $1,249.00 MXN en tu tarjeta terminación 6208. Si no lo reconoces, comunícate al número que aparece al reverso de tu tarjeta.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.banamex.com/centro-de-seguridad",
+    "note": "difícil: el aviso bancario sintético menciona un posible cargo desconocido, pero dirige a un canal verificable y no solicita códigos."
+  },
+  {
+    "id": "l13",
+    "kind": "message",
+    "text": "OXXO tiene una vacante de Auditor de Inventarios para San Nicolás y Escobedo. Si te interesa, revisa las funciones y presenta tu candidatura desde https://careers.femsa.com. El proceso de reclutamiento y selección es gratuito.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://careers.femsa.com/OXXO/job/San-Nicolas%2C-Monterrey-AUDITOR-INVENTARIOS/1337398462/",
+    "note": "difícil: la invitación se basa en una vacante publicada por FEMSA y propone una candidatura normal en su portal sin cobros."
+  },
+  {
+    "id": "l14",
+    "kind": "message",
+    "text": "Liverpool: ¿Te interesa participar en nuestros sorteos? Acude al módulo de sorteos y concursos de tu tienda Liverpool para consultar las bases y registrarte en las dinámicas disponibles.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://sorteos.liverpool.com.mx/app/inicio",
+    "note": "difícil: la invitación típica a sorteos remite a módulos oficiales de la tienda y no afirma un premio inesperado ni exige dinero para liberarlo."
+  },
+  {
+    "id": "l15",
+    "kind": "message",
+    "text": "Hola, soy Lucía, tu vecina del 3B. Recibí el paquete que me pediste guardar; puedes pasar por él después de las siete, cuando vuelva del trabajo.",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "n/a",
+    "note": "Es un mensaje cotidiano sobre una entrega previamente acordada que no pide pagos, códigos ni datos."
+  }
+]
