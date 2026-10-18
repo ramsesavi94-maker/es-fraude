@@ -2,7 +2,7 @@
 
 **Paste a suspicious text, upload a screenshot, describe a phone call or type the name of a loan app. In a few seconds you get the warning signs (quoted from the message), what official Mexican sources say, what to do, where to confirm or report, and a draft complaint.** Free, no sign-up, in Spanish, built for Mexico.
 
-> Live demo: _pending deployment_ · Built for the Nebius x NVIDIA Global AI Hackathon (Best Apps and Agents track)
+> **Live demo: https://es-fraude-seven.vercel.app** · Built for the Nebius x NVIDIA Global AI Hackathon (Best Apps and Agents track)
 
 ## Why
 
@@ -112,7 +112,7 @@ Without `TAVILY_API_KEY` the app still works, using only the deterministic check
 
 ### Deploy
 
-- **Vercel** (what the demo uses): import the repo; `src/app.ts` exports the Hono app and is detected with zero configuration. Add the environment variables from `.env.example`.
+- **Vercel** (the live demo, free Hobby plan; all inference still runs on Token Factory): import the repo; `src/app.ts` exports the Hono app and is detected with zero configuration. Add the environment variables from `.env.example`.
 - **Container**: every push to `main` publishes `ghcr.io/ramsesavi94-maker/es-fraude:latest` (port 8787), which can run on Nebius Serverless AI endpoints or any container host.
 
 ## Project structure
