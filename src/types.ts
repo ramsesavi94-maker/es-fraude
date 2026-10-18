@@ -1,4 +1,5 @@
 import type { Channel } from "./catalog.js";
+import type { Lang } from "./i18n.js";
 
 export type InputKind = "message" | "screenshot" | "call" | "app";
 
@@ -8,6 +9,8 @@ export interface AnalysisInput {
   text?: string;
   /** Screenshot as a data URL (data:image/png;base64,...). */
   image?: string;
+  /** Language of the answer; quotes and the complaint draft stay in Spanish. Default "es". */
+  lang?: Lang;
 }
 
 /** Facts pulled out of the input before any judgement. */

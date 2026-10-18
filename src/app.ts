@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { Hono } from "hono";
 import { bodyLimit } from "hono/body-limit";
 import { analyze } from "./analyze.js";
+import { LANGS, type Lang } from "./i18n.js";
 import type { InputKind } from "./types.js";
 
 const PUBLIC_DIR = join(import.meta.dirname, "..", "public");
@@ -36,36 +37,56 @@ function allowed(ip: string): "ok" | "ip" | "day" {
 
 const app = new Hono();
 
+const ERRORS: Record<Lang, Record<"tooBig" | "ip" | "day" | "empty" | "failed", string>> = {
+  es: {
+    tooBig: "La imagen es demasiado grande.",
+    ip: "Hiciste muchas consultas seguidas. Intenta de nuevo en un rato.",
+    day: "La demo llegó a su límite de consultas de hoy. Vuelve mañana.",
+    empty: "Escribe el mensaje o sube una captura.",
+    failed: "No pude completar el análisis. Intenta de nuevo en unos segundos.",
+  },
+  en: {
+    tooBig: "The image is too large.",
+    ip: "Too many checks in a row. Please try again in a while.",
+    day: "The demo reached today's limit. Please come back tomorrow.",
+    empty: "Paste the message or upload a screenshot.",
+    failed: "The analysis could not be completed. Please try again in a few seconds.",
+  },
+};
+
 // Locally the page is read from public/; on Vercel the CDN serves public/index.html.
 app.get("/", async (c) => {
   try {
     return c.html(await readFile(join(PUBLIC_DIR, "index.html"), "utf8"));
   } catch {
-    return c.redirect("/index.html");
+    const query = new URL(c.req.url).search;
+    return c.redirect(`/index.html${query}`);
   }
 });
 app.get("/health", (c) => c.json({ ok: true }));
 
-app.post("/api/analyze", bodyLimit({ maxSize: 6 * 1024 * 1024, onError: (c) => c.json({ error: "La imagen es demasiado grande." }, 413) }), async (c) => {
+app.post("/api/analyze", bodyLimit({ maxSize: 6 * 1024 * 1024, onError: (c) => c.json({ error: ERRORS.es.tooBig }, 413) }), async (c) => {
+  const body = await c.req.json<{ kind?: string; text?: string; image?: string; lang?: string }>().catch(() => null);
+  const lang = LANGS.find((l) => l === body?.lang) ?? "es";
+  const t = ERRORS[lang];
+
   const ip = c.req.header("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   const limit = allowed(ip);
-  if (limit === "ip") return c.json({ error: "Hiciste muchas consultas seguidas. Intenta de nuevo en un rato." }, 429);
-  if (limit === "day") return c.json({ error: "La demo llegó a su límite de consultas de hoy. Vuelve mañana." }, 429);
+  if (limit !== "ok") return c.json({ error: t[limit] }, 429);
 
-  const body = await c.req.json<{ kind?: string; text?: string; image?: string }>().catch(() => null);
   const kind = KINDS.find((k) => k === body?.kind);
   const text = body?.text?.trim().slice(0, MAX_TEXT);
   const image = body?.image?.startsWith("data:image/") ? body.image : undefined;
-  if (!kind || (!text && !image)) return c.json({ error: "Escribe el mensaje o sube una captura." }, 400);
+  if (!kind || (!text && !image)) return c.json({ error: t.empty }, 400);
 
   try {
-    return c.json(await analyze({ kind, text, image }));
+    return c.json(await analyze({ kind, text, image, lang }));
   } catch (err) {
     const message = (err as Error).message;
     console.error("analyze failed:", message);
     // Provider and status only (e.g. "Token Factory 404 (nvidia/...)"), never keys or message content.
     const code = /^(Token Factory|Tavily) \d{3}(?: \([^)]*\))?/.exec(message)?.[0] ?? (err as Error).name;
-    return c.json({ error: "No pude completar el análisis. Intenta de nuevo en unos segundos.", code }, 502);
+    return c.json({ error: t.failed, code }, 502);
   }
 });
 

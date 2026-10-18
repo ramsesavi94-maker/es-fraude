@@ -1,8 +1,9 @@
 // Runs the evaluation set and reports how well the app separates scams from legitimate messages.
-// Usage: npx tsx --env-file=.env scripts/evaluate.ts [eval/cases.json] [--only f01,l03]
+// Usage: npx tsx --env-file=.env scripts/evaluate.ts [eval/cases.json] [--only f01,l03] [--lang en]
 import { readFile, writeFile } from "node:fs/promises";
 import { basename } from "node:path";
 import { analyze } from "../src/analyze.js";
+import type { Lang } from "../src/i18n.js";
 import type { InputKind, Risk } from "../src/types.js";
 
 interface Case {
@@ -29,6 +30,8 @@ interface Outcome {
 const args = process.argv.slice(2);
 const onlyIdx = args.indexOf("--only");
 const only = onlyIdx !== -1 ? new Set(args.splice(onlyIdx, 2)[1].split(",")) : null;
+const langIdx = args.indexOf("--lang");
+const lang = langIdx !== -1 ? (args.splice(langIdx, 2)[1] as Lang) : "es";
 const file = args[0] ?? "eval/cases.json";
 const cases = (JSON.parse(await readFile(file, "utf8")) as Case[]).filter((c) => !only || only.has(c.id));
 const CONCURRENCY = 3;
@@ -36,7 +39,7 @@ const CONCURRENCY = 3;
 async function runCase(c: Case): Promise<Outcome> {
   const started = Date.now();
   try {
-    const { verdict } = await analyze({ kind: c.kind, text: c.text });
+    const { verdict } = await analyze({ kind: c.kind, text: c.text, lang });
     const flagged = verdict.risk !== "sin_senales";
     const predictedPatterns = verdict.patterns.map((p) => p.id);
     return {
@@ -90,6 +93,7 @@ const summary = {
 
 console.log("\n" + JSON.stringify(summary, null, 2));
 if (!only) {
-  const name = basename(file, ".json") === "cases" ? "results.json" : `results-${basename(file, ".json")}.json`;
+  const base = basename(file, ".json") === "cases" ? "results" : `results-${basename(file, ".json")}`;
+  const name = `${base}${lang === "es" ? "" : `-${lang}`}.json`;
   await writeFile(`eval/${name}`, JSON.stringify({ date: new Date().toISOString(), summary, outcomes }, null, 2));
 }
