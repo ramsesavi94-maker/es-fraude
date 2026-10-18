@@ -1,3 +1,5 @@
+import type { Channel } from "./catalog.js";
+
 export type InputKind = "message" | "screenshot" | "call" | "app";
 
 export interface AnalysisInput {
@@ -28,13 +30,23 @@ export interface Check {
 
 export type Risk = "alto" | "medio" | "sin_senales";
 
+/** What the model is allowed to decide. */
+export interface ModelVerdict {
+  risk: Risk;
+  summary: string;
+  patternIds: string[];
+  signals: { signal: string; quote: string }[];
+  reportDraft: string | null;
+}
+
+/** What the person sees: model judgement plus verified steps and contacts from the catalog. */
 export interface Verdict {
   risk: Risk;
   summary: string;
-  patterns: { id: string; name: string }[];
+  patterns: { id: string; name: string; sources: string[] }[];
   signals: { signal: string; quote: string }[];
   whatToDo: string[];
-  officialChannel: { name: string; contact: string; url?: string } | null;
+  channels: Channel[];
   reportDraft: string | null;
 }
 

@@ -1,6 +1,7 @@
+import { CHANNELS, type ChannelId, GENERAL_CHANNELS, GENERAL_STEPS, PATTERNS } from "./catalog.js";
 import { chat, MODELS, parseJson } from "./llm.js";
-import { DEFAULT_CHANNEL, hostOf, officialOwner } from "./official.js";
-import type { Analysis, AnalysisInput, Check, Extraction, Verdict } from "./types.js";
+import { hostOf, officialOwner } from "./official.js";
+import type { Analysis, AnalysisInput, Check, Extraction, ModelVerdict, Verdict } from "./types.js";
 
 const URL_RE = /\b(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s)]*)?/gi;
 const PHONE_RE = /(?:\+?52[\s-]?)?(?:\(?\d{2,3}\)?[\s-]?)\d{3,4}[\s-]?\d{4}\b/g;
@@ -72,16 +73,22 @@ function verify(extraction: Extraction): Check[] {
   return checks;
 }
 
+const CATALOG_PROMPT = PATTERNS.map((p) => `- ${p.id} (${p.name}): ${p.signals}${p.caveat ? ` Ojo: ${p.caveat}` : ""}`).join("\n");
+
 const VERDICT_RULES = `Eres "¿Es fraude?", un asistente que da una segunda opinión a personas en México sobre mensajes, llamadas o apps sospechosas.
 Reglas:
 - Basa cada señal en una cita textual del contenido. No inventes datos que no estén en el contenido o en las verificaciones.
-- Nunca digas que algo es seguro, legítimo o confiable. Si no hay señales, usa risk "sin_senales" y recomienda confirmar por el canal oficial de la institución.
+- Nunca digas que algo es seguro, legítimo o confiable. Si no hay señales, usa risk "sin_senales".
 - Las instituciones reales no piden contraseñas, NIP, códigos de verificación ni depósitos a cuentas personales por mensaje o llamada.
-- Escribe en español claro, para cualquier persona, sin tecnicismos.
-- No des asesoría legal ni financiera; orienta hacia canales oficiales.`;
+- Clasifica solo con los patrones del catálogo; si ninguno aplica, deja patternIds vacío.
+- No escribas teléfonos, correos, sitios ni pasos a seguir: la app los agrega desde fuentes oficiales verificadas.
+- Escribe en español claro, para cualquier persona, sin tecnicismos. No des asesoría legal ni financiera.
 
-/** Step 3: Nemotron Ultra weighs the content and the checks. */
-async function reason(extraction: Extraction, checks: Check[], trace: Trace): Promise<Verdict> {
+Catálogo de patrones de fraude documentados por autoridades mexicanas:
+${CATALOG_PROMPT}`;
+
+/** Step 3: Nemotron Ultra weighs the content and the checks against the catalog. */
+async function reason(extraction: Extraction, checks: Check[], trace: Trace): Promise<ModelVerdict> {
   const r = await chat(
     MODELS.reasoning,
     [
@@ -91,33 +98,39 @@ async function reason(extraction: Extraction, checks: Check[], trace: Trace): Pr
         content: `Contenido recibido:\n"""\n${extraction.text}\n"""\n\nDatos extraídos:\n${JSON.stringify({ ...extraction, text: undefined }, null, 2)}\n\nVerificaciones:\n${checks.map((c) => `- ${c.check}: ${c.result}`).join("\n") || "- (ninguna)"}\n\nResponde solo con JSON:
 {"risk": "alto|medio|sin_senales",
  "summary": "una o dos frases para la persona",
- "patterns": [{"id": "snake_case", "name": "nombre del tipo de fraude"}],
+ "patternIds": ["ids del catálogo que aplican"],
  "signals": [{"signal": "explicación breve", "quote": "cita textual del contenido"}],
- "whatToDo": ["pasos concretos, en orden"],
- "officialChannel": {"name": "institución", "contact": "teléfono o sitio oficial", "url": "https://..."} o null,
- "reportDraft": "borrador breve de denuncia para CONDUSEF o la policía cibernética si el riesgo es alto o medio, si no null"}`,
+ "reportDraft": "si el riesgo es alto o medio, borrador breve de los hechos para presentar una denuncia (qué llegó, cuándo, qué pidieron, qué datos de contacto o pago aparecen), sin datos de contacto de autoridades; si no, null"}`,
       },
     ],
     { maxTokens: 2500 },
   );
   trace.push({ step: "razonar veredicto", model: r.model, ms: r.ms, tokens: r.tokens });
-  return enforceRules(parseJson<Verdict>(r.text));
+  return parseJson<ModelVerdict>(r.text);
 }
 
-/** Guarantees the product rules even if the model drifts. */
-function enforceRules(v: Verdict): Verdict {
+const NO_SIGNALS_SUMMARY =
+  "No encontré señales claras de fraude. Eso no garantiza que sea seguro: si te piden datos, pagos o algo urgente, confírmalo directamente con la institución por un canal que busques tú.";
+
+/** Step 4: applies the product rules and adds verified steps and contacts from the catalog. */
+function compose(v: ModelVerdict): Verdict {
   const risk = (["alto", "medio", "sin_senales"] as const).includes(v.risk) ? v.risk : "medio";
-  let summary = v.summary ?? "";
-  if (risk === "sin_senales" || /\b(es seguro|es leg[ií]timo|es confiable)\b/i.test(summary)) {
-    summary = summary.replace(/\b(es seguro|es leg[ií]timo|es confiable)\b/gi, "no muestra señales claras");
-  }
+  const summary =
+    risk === "sin_senales"
+      ? NO_SIGNALS_SUMMARY
+      : (v.summary ?? "").replace(/\b(es |parece |luce )?(segur[oa]|leg[ií]tim[oa]|confiable|aut[eé]ntic[oa])\b/gi, "");
+  const patterns = PATTERNS.filter((p) => (v.patternIds ?? []).includes(p.id));
+
+  const steps = [...new Set([...patterns.flatMap((p) => p.steps), ...GENERAL_STEPS])];
+  const channelIds = [...new Set<ChannelId>([...patterns.flatMap((p) => p.channels), ...GENERAL_CHANNELS])];
+
   return {
     risk,
     summary,
-    patterns: v.patterns ?? [],
+    patterns: patterns.map((p) => ({ id: p.id, name: p.name, sources: p.sources })),
     signals: (v.signals ?? []).filter((s) => s.quote?.trim()),
-    whatToDo: v.whatToDo ?? [],
-    officialChannel: v.officialChannel ?? DEFAULT_CHANNEL,
+    whatToDo: risk === "sin_senales" ? GENERAL_STEPS : steps,
+    channels: channelIds.map((id) => CHANNELS[id]),
     reportDraft: risk === "sin_senales" ? null : (v.reportDraft ?? null),
   };
 }
@@ -126,6 +139,6 @@ export async function analyze(input: AnalysisInput): Promise<Analysis> {
   const trace: Trace = [];
   const extraction = await extract(input, trace);
   const checks = verify(extraction);
-  const verdict = await reason(extraction, checks, trace);
+  const verdict = compose(await reason(extraction, checks, trace));
   return { extraction, checks, verdict, trace };
 }
