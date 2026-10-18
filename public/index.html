@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Es fraude?</title>
+<meta name="description" content="Una segunda opinión antes de caer en un fraude. Pega el mensaje, sube la captura o describe la llamada. Gratis y sin registro.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<style>
+  :root {
+    --bg: #f6f4ef; --surface: #ffffff; --ink: #1c1b19; --muted: #6b675f; --line: #e3dfd6;
+    --brand: #1f3a5f; --brand-ink: #ffffff; --focus: #2f6fdd;
+    --high: #b42318; --high-bg: #fdecea; --mid: #a15c00; --mid-bg: #fff4e0; --none: #3e5368; --none-bg: #e8eef4;
+    --radius: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413; --surface: #1e1d1b; --ink: #f1efe9; --muted: #a8a399; --line: #34322e;
+      --brand: #8fb3e6; --brand-ink: #10213a; --focus: #8fb3e6;
+      --high: #ff8a80; --high-bg: #3a1714; --mid: #ffc266; --mid-bg: #3a2a10; --none: #a9bccf; --none-bg: #1f2a35;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 2rem; margin: 8px 0 4px; letter-spacing: -0.02em; }
+  h2 { font-size: 1.05rem; margin: 22px 0 8px; }
+  p { margin: 0 0 8px; }
+  .lead { color: var(--muted); margin-bottom: 18px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+  .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--line); padding: 4px; border-radius: 12px; margin-bottom: 12px; }
+  .tabs button { border: 0; background: transparent; color: var(--ink); padding: 10px 4px; border-radius: 9px; font: inherit; font-size: 0.9rem; cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--surface); font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / 0.12); }
+  label.hint { display: block; color: var(--muted); font-size: 0.95rem; margin-bottom: 8px; }
+  textarea, input[type="text"] { width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 12px; font: inherit; background: var(--bg); color: var(--ink); resize: vertical; }
+  textarea { min-height: 140px; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .drop { display: grid; place-items: center; gap: 6px; border: 2px dashed var(--line); border-radius: 12px; padding: 22px; text-align: center; cursor: pointer; color: var(--muted); }
+  .drop img { max-width: 100%; max-height: 320px; border-radius: 8px; }
+  .primary { width: 100%; margin-top: 12px; border: 0; border-radius: 12px; padding: 15px; font: inherit; font-weight: 700; font-size: 1.05rem; background: var(--brand); color: var(--brand-ink); cursor: pointer; }
+  .primary:disabled { opacity: 0.6; cursor: wait; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; color: var(--muted); font-size: 0.9rem; }
+  .chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 0.9rem; cursor: pointer; }
+  .status { margin-top: 16px; color: var(--muted); display: flex; gap: 10px; align-items: center; }
+  .spinner { width: 18px; height: 18px; border: 3px solid var(--line); border-top-color: var(--brand); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error { margin-top: 16px; color: var(--high); }
+  .verdict { margin-top: 20px; }
+  .banner { border-radius: var(--radius); padding: 16px; margin-bottom: 4px; }
+  .banner strong { display: block; font-size: 1.3rem; }
+  .banner.alto { background: var(--high-bg); color: var(--high); }
+  .banner.medio { background: var(--mid-bg); color: var(--mid); }
+  .banner.sin_senales { background: var(--none-bg); color: var(--none); }
+  .banner p { color: var(--ink); margin: 6px 0 0; }
+  ul.clean { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .signal blockquote { margin: 4px 0 0; padding: 6px 10px; border-left: 3px solid var(--line); color: var(--muted); font-size: 0.95rem; overflow-wrap: anywhere; }
+  .check { font-size: 0.95rem; }
+  .check a { display: block; font-size: 0.85rem; color: var(--brand); overflow-wrap: anywhere; }
+  ol { padding-left: 22px; margin: 0; }
+  ol li { margin-bottom: 6px; }
+  .channel { display: grid; gap: 2px; }
+  .channel .name { font-weight: 600; }
+  .channel .use { color: var(--muted); font-size: 0.9rem; }
+  .channel a { color: var(--brand); font-weight: 600; overflow-wrap: anywhere; }
+  .report textarea { min-height: 120px; font-size: 0.95rem; }
+  .row { display: flex; gap: 8px; margin-top: 8px; }
+  .secondary { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 10px 14px; font: inherit; cursor: pointer; }
+  .sources { font-size: 0.85rem; color: var(--muted); }
+  .sources a { color: var(--muted); overflow-wrap: anywhere; }
+  footer { margin-top: 32px; font-size: 0.85rem; color: var(--muted); display: grid; gap: 6px; }
+  footer a { color: var(--muted); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>¿Es fraude?</h1>
+  <p class="lead">Una segunda opinión antes de caer. Pega el mensaje, sube la captura o cuéntanos la llamada. Gratis y sin registro.</p>
+
+  <section class="card" aria-label="Lo que quieres revisar">
+    <div class="tabs" role="tablist">
+      <button role="tab" data-kind="message" aria-selected="true">Mensaje</button>
+      <button role="tab" data-kind="screenshot" aria-selected="false">Captura</button>
+      <button role="tab" data-kind="call" aria-selected="false">Llamada</button>
+      <button role="tab" data-kind="app" aria-selected="false">App de préstamo</button>
+    </div>
+
+    <form id="form">
+      <div id="text-input">
+        <label class="hint" for="text" id="text-hint">Copia y pega el SMS, WhatsApp o correo que recibiste.</label>
+        <textarea id="text" maxlength="4000"></textarea>
+      </div>
+      <div id="image-input" hidden>
+        <label class="hint" for="file">Sube una captura de pantalla del mensaje. Tapa antes tus datos personales si quieres.</label>
+        <label class="drop" for="file" id="drop">
+          <span id="drop-label">Toca para elegir una imagen</span>
+          <img id="preview" alt="Vista previa de la captura" hidden>
+        </label>
+        <input type="file" id="file" accept="image/*" hidden>
+      </div>
+      <button class="primary" id="submit" type="submit">Revisar</button>
+    </form>
+
+    <div class="examples" id="examples">
+      <span>Prueba con un ejemplo:</span>
+      <button class="chip" data-example="sat">Falso SAT</button>
+      <button class="chip" data-example="familia">“Cambié de número”</button>
+      <button class="chip" data-example="montadeudas">Montadeudas</button>
+    </div>
+
+    <div class="status" id="status" role="status" hidden><div class="spinner"></div><span id="status-text"></span></div>
+    <p class="error" id="error" role="alert" hidden></p>
+  </section>
+
+  <section class="verdict" id="result" hidden aria-live="polite"></section>
+
+  <footer>
+    <p><strong>Privacidad:</strong> no guardamos lo que revisas. A los buscadores solo enviamos nombres de instituciones, dominios y teléfonos, nunca tu mensaje.</p>
+    <p>Esto es una orientación, no asesoría legal. Si estás en peligro, llama al <a href="tel:911">911</a>.</p>
+    <p>Hecho con NVIDIA Nemotron en Nebius Token Factory y Tavily. <a href="https://github.com/ramsesavi94-maker/es-fraude">Código abierto</a>.</p>
+  </footer>
+</main>
+
+<script>
+const EXAMPLES = {
+  sat: { kind: "message", text: "SAT: Tienes una devolucion de impuestos pendiente por $4,850. Para recibirla confirma tus datos bancarios antes de 24 hrs en sat-devoluciones-mx.com/confirmar o se cancelara." },
+  familia: { kind: "message", text: "Hola tía, soy Andrés, cambié de número porque se me cayó el cel. Oye me urge que me prestes 3,500 para pagar algo hoy, te los regreso el lunes. Te paso la cuenta a nombre de Luis Pérez." },
+  montadeudas: { kind: "message", text: "PRESTAMO EXPRESS: tu deuda de $2,300 vence HOY. Si no pagas antes de las 6pm enviaremos a todos tus contactos que eres un deudor y un estafador, con tu foto." },
+};
+const HINTS = {
+  message: ["Copia y pega el SMS, WhatsApp o correo que recibiste.", "Pega aquí el mensaje…"],
+  call: ["Cuéntanos qué te dijeron en la llamada: quién dijo ser, qué te pidió y qué tan urgente era.", "Ej.: Me llamaron diciendo que eran del banco, que había un cargo raro y me pidieron el código que me llegó por SMS…"],
+  app: ["Escribe el nombre de la app o empresa que te ofrece el préstamo o te está cobrando.", "Ej.: Préstamo Fácil Ya"],
+};
+const RISK = {
+  alto: "Riesgo alto de fraude",
+  medio: "Hay señales de alerta",
+  sin_senales: "No encontré señales claras",
+};
+const STEPS = ["Leyendo lo que recibiste…", "Buscando en fuentes oficiales…", "Analizando con Nemotron…"];
+
+const $ = (id) => document.getElementById(id);
+let kind = "message";
+let image = null;
+let stepTimer = null;
+
+function el(tag, props = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === "class") node.className = v; else if (k === "text") node.textContent = v; else node.setAttribute(k, v);
+  }
+  for (const c of children) if (c) node.append(c);
+  return node;
+}
+
+function selectKind(next) {
+  kind = next;
+  for (const b of document.querySelectorAll(".tabs button")) b.setAttribute("aria-selected", String(b.dataset.kind === next));
+  $("image-input").hidden = next !== "screenshot";
+  $("text-input").hidden = next === "screenshot";
+  if (HINTS[next]) {
+    $("text-hint").textContent = HINTS[next][0];
+    $("text").placeholder = HINTS[next][1];
+    $("text").style.minHeight = next === "app" ? "56px" : "";
+  }
+}
+
+for (const b of document.querySelectorAll(".tabs button")) b.addEventListener("click", () => selectKind(b.dataset.kind));
+
+for (const b of document.querySelectorAll("[data-example]")) {
+  b.addEventListener("click", () => {
+    const ex = EXAMPLES[b.dataset.example];
+    selectKind(ex.kind);
+    $("text").value = ex.text;
+    submit();
+  });
+}
+
+// Shrinks photos before upload: phone screenshots are often several MB.
+$("file").addEventListener("change", async () => {
+  const file = $("file").files[0];
+  if (!file) return;
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
+  const canvas = Object.assign(document.createElement("canvas"), { width: Math.round(bitmap.width * scale), height: Math.round(bitmap.height * scale) });
+  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  image = canvas.toDataURL("image/jpeg", 0.85);
+  $("preview").src = image;
+  $("preview").hidden = false;
+  $("drop-label").textContent = "Toca para cambiar la imagen";
+});
+
+$("form").addEventListener("submit", (e) => { e.preventDefault(); submit(); });
+
+async function submit() {
+  const text = $("text").value.trim();
+  const payload = kind === "screenshot" ? { kind, image } : { kind, text };
+  if (kind === "screenshot" ? !image : !text) return showError(kind === "screenshot" ? "Elige una captura primero." : "Escribe o pega lo que quieres revisar.");
+
+  $("error").hidden = true;
+  $("result").hidden = true;
+  $("submit").disabled = true;
+  startSteps();
+  try {
+    const res = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Algo salió mal.");
+    render(data);
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    stopSteps();
+    $("submit").disabled = false;
+  }
+}
+
+function startSteps() {
+  let i = 0;
+  $("status").hidden = false;
+  $("status-text").textContent = STEPS[0];
+  stepTimer = setInterval(() => { i = Math.min(i + 1, STEPS.length - 1); $("status-text").textContent = STEPS[i]; }, 3500);
+}
+function stopSteps() { clearInterval(stepTimer); $("status").hidden = true; }
+function showError(msg) { $("error").textContent = msg; $("error").hidden = false; }
+
+function contactLinks(contact) {
+  const span = el("span");
+  contact.split("·").map((s) => s.trim()).forEach((part, i) => {
+    if (i) span.append(" · ");
+    const digits = part.replace(/ext\..*$/i, "").replace(/\D/g, "");
+    if (/@/.test(part)) span.append(el("a", { href: `mailto:${part}`, text: part }));
+    else if (digits.length >= 3 && /^[\d\s]+(ext\.\s*\d+)?$/i.test(part)) span.append(el("a", { href: `tel:${digits}`, text: part }));
+    else span.append(part);
+  });
+  return span;
+}
+
+function render({ verdict: v, checks }) {
+  const out = $("result");
+  out.replaceChildren();
+
+  out.append(el("div", { class: `banner ${v.risk}` }, el("strong", { text: RISK[v.risk] }), el("p", { text: v.summary })));
+
+  if (v.signals.length) {
+    out.append(el("h2", { text: v.risk === "sin_senales" ? "Lo que observé" : "Señales que encontré" }));
+    const list = el("ul", { class: "clean" });
+    for (const s of v.signals) list.append(el("li", { class: "card signal" }, el("span", { text: s.signal }), el("blockquote", { text: `“${s.quote}”` })));
+    out.append(list);
+  }
+
+  if (checks.length) {
+    out.append(el("h2", { text: "Lo que revisé" }));
+    const list = el("ul", { class: "clean" });
+    for (const c of checks) {
+      const item = el("li", { class: "card check" }, el("strong", { text: c.check }), el("div", { text: c.result }));
+      for (const e of c.evidence ?? []) item.append(el("a", { href: e.url, target: "_blank", rel: "noopener", text: e.title || e.url }));
+      list.append(item);
+    }
+    out.append(list);
+  }
+
+  out.append(el("h2", { text: "Qué hacer" }));
+  const steps = el("ol", { class: "card" });
+  for (const s of v.whatToDo) steps.append(el("li", { text: s }));
+  out.append(steps);
+
+  out.append(el("h2", { text: "Dónde confirmar o reportar" }));
+  const channels = el("ul", { class: "clean" });
+  for (const ch of v.channels) {
+    channels.append(el("li", { class: "card channel" },
+      el("span", { class: "name", text: ch.name }),
+      contactLinks(ch.contact),
+      el("span", { class: "use", text: ch.use }),
+      el("a", { href: ch.url, target: "_blank", rel: "noopener", text: "Fuente oficial" })));
+  }
+  out.append(channels);
+
+  if (v.reportDraft) {
+    out.append(el("h2", { text: "Borrador para tu denuncia" }));
+    const area = el("textarea", { "aria-label": "Borrador de denuncia" });
+    area.value = v.reportDraft;
+    const copy = el("button", { class: "secondary", type: "button", text: "Copiar" });
+    copy.addEventListener("click", async () => { await navigator.clipboard.writeText(area.value); copy.textContent = "Copiado"; });
+    out.append(el("div", { class: "card report" }, area, el("div", { class: "row" }, copy)));
+  }
+
+  if (v.patterns.length) {
+    const src = el("p", { class: "sources" }, `Tipo de fraude: ${v.patterns.map((p) => p.name).join(", ")}. Fuentes: `);
+    v.patterns.flatMap((p) => p.sources).forEach((u, i) => { if (i) src.append(", "); src.append(el("a", { href: u, target: "_blank", rel: "noopener", text: new URL(u).hostname })); });
+    out.append(src);
+  }
+
+  const again = el("button", { class: "secondary", type: "button", text: "Revisar otro" });
+  again.addEventListener("click", () => { out.hidden = true; $("text").value = ""; window.scrollTo({ top: 0, behavior: "smooth" }); });
+  out.append(el("div", { class: "row" }, again));
+
+  out.hidden = false;
+  out.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+</script>
+</body>
+</html>

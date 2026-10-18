@@ -49,10 +49,10 @@ entrada (texto | captura | descripción de llamada | nombre de app)
 | Fecha | Trabajo |
 |---|---|
 | 18-10 | Plan, repo, primer análisis de punta a punta con Ultra |
-| 19-10 | Catálogo de Codex integrado; lectura de capturas con Super VL |
+| 19-10 | Catálogo de Codex integrado; lectura de capturas con Super VL (hecho el 18-10) |
 | 20-10 | Verificación con Tavily y lista de dominios oficiales (hecha el 18-10) |
 | 21-10 | Veredicto final: reglas de "nunca es seguro", borrador de denuncia |
-| 22-10 | Interfaz web para celular |
+| 22-10 | Interfaz web para celular (primera versión el 18-10) |
 | 23-10 | Conjunto de evaluación: 30 mensajes fraudulentos y 15 legítimos; medir aciertos |
 | 24-10 | Despliegue público (Nebius Serverless si es posible) |
 | 25-10 | Pruebas con 5 personas reales; ajustes |

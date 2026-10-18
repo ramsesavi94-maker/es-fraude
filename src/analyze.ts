@@ -151,12 +151,15 @@ function buildSearches(e: Extraction, unofficialHosts: string[], isApp: boolean)
   return planned;
 }
 
+/** Lowercase, no accents, no spaces: "BBVA México" and "bbva mexico" compare equal. */
+const normalize = (s: string) => s.normalize("NFD").replace(/[̀-ͯ\s]/g, "").toLowerCase();
+
 async function runSearch(p: PlannedSearch): Promise<Check | null> {
   try {
     let results = await search(p.query, { includeDomains: p.includeDomains });
     if (p.mustMention) {
-      const needle = p.mustMention.toLowerCase().replace(/\s+/g, "");
-      results = results.filter((r) => `${r.title} ${r.url} ${r.content}`.toLowerCase().replace(/\s+/g, "").includes(needle));
+      const needle = normalize(p.mustMention);
+      results = results.filter((r) => normalize(`${r.title} ${r.url} ${r.content}`).includes(needle));
     }
     return results.length
       ? { check: p.check, result: p.found(results.length), evidence: results.map((r) => ({ title: r.title, url: r.url, excerpt: r.content.slice(0, 280) })) }
@@ -202,7 +205,7 @@ async function reason(extraction: Extraction, checks: Check[], trace: Trace): Pr
 {"risk": "alto|medio|sin_senales",
  "summary": "una o dos frases para la persona",
  "patternIds": ["ids del catálogo que aplican"],
- "signals": [{"signal": "explicación breve", "quote": "cita textual del contenido o de un extracto de las verificaciones"}],
+ "signals": [{"signal": "explicación breve", "quote": "cita textual del contenido recibido o de un extracto (·) de una página oficial; nunca cites el texto de resultado de una verificación"}],
  "reportDraft": "si el riesgo es alto o medio, borrador breve de los hechos para presentar una denuncia (qué llegó, cuándo, qué pidieron, qué datos de contacto o pago aparecen), sin datos de contacto de autoridades; si no, null"}`,
       },
     ],
