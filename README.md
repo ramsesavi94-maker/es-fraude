@@ -2,7 +2,7 @@
 
 **Paste a suspicious text, upload a screenshot, describe a phone call or type the name of a loan app. In a few seconds you get the warning signs (quoted from the message), what official Mexican sources say, what to do, where to confirm or report, and a draft complaint.** Free, no sign-up, in Spanish, built for Mexico.
 
-> **Live demo: https://es-fraude-seven.vercel.app** · Built for the Nebius x NVIDIA Global AI Hackathon (Best Apps and Agents track)
+> **Live demo: [English](https://es-fraude-seven.vercel.app/?lang=en) · [Español](https://es-fraude-seven.vercel.app/)** · Built for the Nebius x NVIDIA Global AI Hackathon (Best Apps and Agents track)
 
 ## Why
 
@@ -21,6 +21,8 @@ People do not need another awareness campaign. They need an answer about **the m
 | Screenshot | A photo of the chat or SMS; read by a vision model |
 | Phone call | "They said they were from my bank and asked for the code I got by SMS…" |
 | Loan app | Just the app or lender name |
+
+The interface and the answer are available in **Spanish and English** (`?lang=en`). In English, quotes stay in the original Spanish because they are evidence, and the draft complaint stays in Spanish because it is filed with Mexican authorities.
 
 The answer always includes:
 
