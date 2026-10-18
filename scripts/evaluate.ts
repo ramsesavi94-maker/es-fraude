@@ -44,7 +44,8 @@ async function runCase(c: Case): Promise<Outcome> {
       expected: c.expected,
       risk: verdict.risk,
       correct: c.expected === "fraude" ? flagged : !flagged,
-      patternHit: c.expected === "fraude" ? c.expectedPatterns.some((p) => predictedPatterns.includes(p)) : null,
+      // Only scored when the case names an expected pattern; out-of-catalog scams have none.
+      patternHit: c.expected === "fraude" && c.expectedPatterns.length ? c.expectedPatterns.some((p) => predictedPatterns.includes(p)) : null,
       predictedPatterns,
       ms: Date.now() - started,
     };
@@ -74,11 +75,15 @@ const ms = outcomes.map((o) => o.ms).sort((a, b) => a - b);
 const summary = {
   cases: outcomes.length,
   fraudDetected: `${frauds.filter((o) => o.correct).length}/${frauds.length} (${pct(frauds.filter((o) => o.correct).length, frauds.length)})`,
-  patternMatch: `${frauds.filter((o) => o.patternHit).length}/${frauds.length} (${pct(frauds.filter((o) => o.patternHit).length, frauds.length)})`,
+  patternMatch: (() => {
+    const scored = frauds.filter((o) => o.patternHit !== null);
+    const hits = scored.filter((o) => o.patternHit).length;
+    return `${hits}/${scored.length} (${pct(hits, scored.length)}) of scams with a catalog pattern`;
+  })(),
   legitimateWithoutFalseAlarm: `${legit.filter((o) => o.correct).length}/${legit.length} (${pct(legit.filter((o) => o.correct).length, legit.length)})`,
   falseAlarms: legit.filter((o) => !o.correct).map((o) => `${o.id}:${o.risk}`),
   missedFrauds: frauds.filter((o) => !o.correct).map((o) => o.id),
-  wrongPattern: frauds.filter((o) => o.correct && !o.patternHit).map((o) => `${o.id}:${o.predictedPatterns.join("+") || "-"}`),
+  wrongPattern: frauds.filter((o) => o.correct && o.patternHit === false).map((o) => `${o.id}:${o.predictedPatterns.join("+") || "-"}`),
   errors: outcomes.filter((o) => o.error).map((o) => o.id),
   latencyMs: { median: ms[Math.floor(ms.length / 2)], p90: ms[Math.floor(ms.length * 0.9)] },
 };

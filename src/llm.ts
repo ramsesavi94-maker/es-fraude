@@ -20,13 +20,20 @@ export interface ChatResult {
   tokens: number;
 }
 
-export async function chat(model: string, messages: ChatMessage[], { maxTokens = 1500, temperature = 0.2 } = {}): Promise<ChatResult> {
+export interface ChatOptions {
+  maxTokens?: number;
+  temperature?: number;
+  /** Constrains output to a JSON object. Reliable on Ultra; Super produced malformed output with it in testing. */
+  jsonMode?: boolean;
+}
+
+export async function chat(model: string, messages: ChatMessage[], { maxTokens = 1500, temperature = 0.2, jsonMode = false }: ChatOptions = {}): Promise<ChatResult> {
   const base = process.env.NEBIUS_BASE_URL ?? "https://api.tokenfactory.nebius.com/v1";
   const started = Date.now();
   const res = await fetch(`${base}/chat/completions`, {
     method: "POST",
     headers: { Authorization: `Bearer ${process.env.NEBIUS_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature }),
+    body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature, ...(jsonMode && { response_format: { type: "json_object" } }) }),
   });
   if (!res.ok) throw new Error(`Token Factory ${res.status} (${model}): ${(await res.text()).slice(0, 300)}`);
 
@@ -35,6 +42,23 @@ export async function chat(model: string, messages: ChatMessage[], { maxTokens =
     usage?: { total_tokens?: number };
   };
   return { text: json.choices[0]?.message.content?.trim() ?? "", model, ms: Date.now() - started, tokens: json.usage?.total_tokens ?? 0 };
+}
+
+/**
+ * Calls a model and parses its JSON reply, retrying once if the reply is not
+ * valid JSON. Both attempts are reported so the trace shows the retry.
+ */
+export async function chatJson<T>(model: string, messages: ChatMessage[], options: ChatOptions = {}): Promise<{ data: T; calls: ChatResult[] }> {
+  const calls: ChatResult[] = [];
+  for (let attempt = 1; ; attempt++) {
+    const r = await chat(model, messages, options);
+    calls.push(r);
+    try {
+      return { data: parseJson<T>(r.text), calls };
+    } catch (err) {
+      if (attempt >= 2) throw err;
+    }
+  }
 }
 
 /** Parses the first JSON object in a model reply, tolerating code fences and surrounding prose. */

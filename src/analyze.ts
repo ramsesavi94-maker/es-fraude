@@ -1,5 +1,5 @@
 import { CHANNELS, type ChannelId, GENERAL_CHANNELS, GENERAL_STEPS, PATTERNS } from "./catalog.js";
-import { chat, MODELS, parseJson } from "./llm.js";
+import { chat, chatJson, MODELS } from "./llm.js";
 import { brandMatch, hostOf, officialOwner, registrableDomain } from "./official.js";
 import { OFFICIAL_SEARCH_DOMAINS, search, tavilyEnabled } from "./tavily.js";
 import type { Analysis, AnalysisInput, Check, Extraction, ModelVerdict, Verdict } from "./types.js";
@@ -28,7 +28,7 @@ async function extract(input: AnalysisInput, trace: Trace): Promise<Extraction> 
     text = [text, r.text].filter(Boolean).join("\n\n");
   }
 
-  const r = await chat(MODELS.fast, [
+  const { data: facts, calls } = await chatJson<Partial<Extraction>>(MODELS.fast, [
     {
       role: "system",
       content:
@@ -45,8 +45,7 @@ async function extract(input: AnalysisInput, trace: Trace): Promise<Extraction> 
  "urgency": true|false}`,
     },
   ]);
-  trace.push({ step: "extraer datos", model: r.model, ms: r.ms, tokens: r.tokens });
-  const facts = parseJson<Partial<Extraction>>(r.text);
+  for (const r of calls) trace.push({ step: "extraer datos", model: r.model, ms: r.ms, tokens: r.tokens });
 
   const isApp = input.kind === "app" && text.length < 80;
   return {
@@ -204,7 +203,7 @@ function formatChecks(checks: Check[]): string {
 
 /** Step 3: Nemotron Ultra weighs the content and the checks against the catalog. */
 async function reason(extraction: Extraction, checks: Check[], trace: Trace): Promise<ModelVerdict> {
-  const r = await chat(
+  const { data, calls } = await chatJson<ModelVerdict>(
     MODELS.reasoning,
     [
       { role: "system", content: VERDICT_RULES },
@@ -218,10 +217,10 @@ async function reason(extraction: Extraction, checks: Check[], trace: Trace): Pr
  "reportDraft": "si el riesgo es alto o medio, borrador breve de los hechos para presentar una denuncia (qué llegó, cuándo, qué pidieron, qué datos de contacto o pago aparecen), sin datos de contacto de autoridades; si no, null"}`,
       },
     ],
-    { maxTokens: 2500 },
+    { maxTokens: 2500, jsonMode: true },
   );
-  trace.push({ step: "razonar veredicto", model: r.model, ms: r.ms, tokens: r.tokens });
-  return parseJson<ModelVerdict>(r.text);
+  for (const r of calls) trace.push({ step: "razonar veredicto", model: r.model, ms: r.ms, tokens: r.tokens });
+  return data;
 }
 
 const NO_SIGNALS_SUMMARY =
@@ -274,6 +273,8 @@ export async function analyze(input: AnalysisInput): Promise<Analysis> {
   const extraction = await extract(input, trace);
   const checks = await verify(extraction, input.kind === "app", trace);
   let verdict = compose(await reason(extraction, checks, trace));
-  if (input.kind === "app" && verdict.risk === "sin_senales") verdict = unverifiedApp(verdict);
+  // Only for a bare lender name (the "App de préstamo" tab); a described app is judged on its content.
+  const isLenderName = input.kind === "app" && extraction.claimedEntity === extraction.text;
+  if (isLenderName && verdict.risk === "sin_senales") verdict = unverifiedApp(verdict);
   return { extraction, checks, verdict, trace };
 }
