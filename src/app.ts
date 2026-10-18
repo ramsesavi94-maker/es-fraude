@@ -61,8 +61,11 @@ app.post("/api/analyze", bodyLimit({ maxSize: 6 * 1024 * 1024, onError: (c) => c
   try {
     return c.json(await analyze({ kind, text, image }));
   } catch (err) {
-    console.error("analyze failed:", (err as Error).message);
-    return c.json({ error: "No pude completar el análisis. Intenta de nuevo en unos segundos." }, 502);
+    const message = (err as Error).message;
+    console.error("analyze failed:", message);
+    // Provider and status only (e.g. "Token Factory 404 (nvidia/...)"), never keys or message content.
+    const code = /^(Token Factory|Tavily) \d{3}(?: \([^)]*\))?/.exec(message)?.[0] ?? (err as Error).name;
+    return c.json({ error: "No pude completar el análisis. Intenta de nuevo en unos segundos.", code }, 502);
   }
 });
 
