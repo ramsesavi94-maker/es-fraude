@@ -44,6 +44,33 @@ export interface ModelVerdict {
   reportDraft: string | null;
 }
 
+export type RouteType = "orientacion" | "reclamacion" | "denuncia_penal" | "reporte_plataforma";
+export type RouteChannel = "form" | "email" | "phone" | "in_app";
+
+/** One verified place to report, with everything the page needs to act on it. */
+export interface ReportRoute {
+  id: string;
+  name: string;
+  type: RouteType;
+  channel: RouteChannel;
+  /** URL, email address or phone number. */
+  target: string;
+  /** When this route applies, in one line. */
+  when: string;
+  source: string;
+  /** Only for routes tied to one state (e.g. a state prosecutor's online complaint). */
+  state?: string;
+  /** For phone routes: what to have ready and say. */
+  script?: string[];
+}
+
+export interface ReportPlan {
+  /** Steps for people who already paid, gave data or a code. */
+  urgent: { text: string; source: string }[];
+  evidence: string[];
+  routes: ReportRoute[];
+}
+
 /** What the person sees: model judgement plus verified steps and contacts from the catalog. */
 export interface Verdict {
   risk: Risk;
@@ -53,6 +80,8 @@ export interface Verdict {
   whatToDo: string[];
   channels: Channel[];
   reportDraft: string | null;
+  /** Step-by-step reporting help; null when there are no warning signs. */
+  report: ReportPlan | null;
 }
 
 export interface Analysis {

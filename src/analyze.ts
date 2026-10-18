@@ -1,6 +1,7 @@
 import { type Channel, CHANNELS, type ChannelId, GENERAL_CHANNELS, PATTERNS } from "./catalog.js";
 import { CHANNELS_EN, type Lang, MESSAGES, type Messages, PATTERNS_EN } from "./i18n.js";
 import { chat, chatJson, MODELS } from "./llm.js";
+import { reportPlan } from "./report.js";
 import { brandMatch, hostOf, officialOwner, registrableDomain } from "./official.js";
 import { OFFICIAL_SEARCH_DOMAINS, search, tavilyEnabled } from "./tavily.js";
 import type { Analysis, AnalysisInput, Check, Extraction, ModelVerdict, Verdict } from "./types.js";
@@ -218,7 +219,7 @@ async function reason(extraction: Extraction, checks: Check[], trace: Trace, m: 
  "summary": "una o dos frases para la persona",
  "patternIds": ["ids del catálogo que aplican"],
  "signals": [{"signal": "explicación breve", "quote": "cita textual del contenido recibido o de un extracto (·) de una página oficial; nunca cites el texto de resultado de una verificación"}],
- "reportDraft": "si el riesgo es alto o medio, borrador breve de los hechos para presentar una denuncia (qué llegó, cuándo, qué pidieron, qué datos de contacto o pago aparecen), sin datos de contacto de autoridades; si no, null"}`,
+ "reportDraft": "si el riesgo es alto o medio, borrador breve de los hechos para presentar una denuncia (qué llegó, cuándo, qué pidieron, qué datos de contacto o pago aparecen), sin datos de contacto de autoridades y sin afirmar si la persona pagó o dio datos (eso lo completa ella); si no, null"}`,
       },
     ],
     { maxTokens: 2500, jsonMode: true },
@@ -228,7 +229,7 @@ async function reason(extraction: Extraction, checks: Check[], trace: Trace, m: 
 }
 
 /** Step 4: applies the product rules and adds verified steps and contacts from the catalog. */
-function compose(v: ModelVerdict, lang: Lang): Verdict {
+function compose(v: ModelVerdict, extraction: Extraction, lang: Lang): Verdict {
   const m = MESSAGES[lang];
   const risk = (["alto", "medio", "sin_senales"] as const).includes(v.risk) ? v.risk : "medio";
   const summary =
@@ -249,6 +250,7 @@ function compose(v: ModelVerdict, lang: Lang): Verdict {
     whatToDo: risk === "sin_senales" ? m.generalSteps : steps,
     channels: channelIds.map((id) => channel(id, lang)),
     reportDraft: risk === "sin_senales" ? null : (v.reportDraft ?? null),
+    report: risk === "sin_senales" ? null : reportPlan(patterns.map((p) => p.id), extraction, lang),
   };
 }
 
@@ -278,7 +280,7 @@ export async function analyze(input: AnalysisInput): Promise<Analysis> {
   const trace: Trace = [];
   const extraction = await extract(input, trace);
   const checks = await verify(extraction, input.kind === "app", trace, m);
-  let verdict = compose(await reason(extraction, checks, trace, m), lang);
+  let verdict = compose(await reason(extraction, checks, trace, m), extraction, lang);
   // Only for a bare lender name (the "App de préstamo" tab); a described app is judged on its content.
   const isLenderName = input.kind === "app" && extraction.claimedEntity === extraction.text;
   if (isLenderName && verdict.risk === "sin_senales") verdict = unverifiedApp(verdict, lang);

@@ -138,6 +138,35 @@
   .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
   .badge { font-size: 0.78rem; font-weight: 600; border: 1px solid var(--line); background: var(--surface); padding: 4px 10px; border-radius: 999px; }
 
+  /* Report flow */
+  .report-flow { display: grid; gap: 14px; }
+  .rstep { border-top: 1px solid var(--line); padding-top: 14px; }
+  .rstep:first-of-type { border-top: 0; padding-top: 0; }
+  .rstep h3 { display: flex; align-items: center; gap: 8px; font-size: 0.98rem; margin: 0 0 8px; }
+  .rstep h3 .n { width: 24px; height: 24px; border-radius: 8px; background: var(--brand); color: var(--brand-ink); font-size: 0.8rem; display: grid; place-items: center; flex: none; }
+  .yesno { display: flex; gap: 8px; }
+  .yesno button { flex: 1; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 12px; padding: 10px; font: inherit; font-weight: 600; cursor: pointer; }
+  .yesno button[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+  .urgent { margin-top: 10px; background: var(--high-bg); border: 1px solid var(--high-line); border-radius: 12px; padding: 12px 12px 12px 30px; }
+  .urgent li { margin-bottom: 6px; }
+  .urgent a { font-size: 0.8rem; }
+  .evidence label { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; cursor: pointer; }
+  .evidence input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--brand); flex: none; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .fields label { display: grid; gap: 4px; font-size: 0.85rem; color: var(--muted); }
+  .fields .wide { grid-column: 1 / -1; }
+  .fields input, .fields select { font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; width: 100%; }
+  .route { border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: grid; gap: 6px; background: var(--surface-2); }
+  .route.featured { border-color: var(--brand); }
+  .route .top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .route .rtype { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--brand); white-space: nowrap; }
+  .route .when { color: var(--muted); font-size: 0.88rem; }
+  .route .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .route .script { margin: 4px 0 0; padding-left: 20px; font-size: 0.9rem; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; border: 0; text-decoration: none; font: inherit; font-weight: 700; font-size: 0.88rem; padding: 8px 12px; border-radius: 999px; cursor: pointer; background: var(--brand); color: var(--brand-ink); }
+  .btn.soft { background: var(--brand-soft); color: var(--brand); }
+  .local-note { font-size: 0.8rem; color: var(--muted); margin: 8px 0 0; }
+  @media (max-width: 420px) { .fields { grid-template-columns: 1fr; } }
   footer { margin: 28px 0 40px; font-size: 0.85rem; color: var(--muted); display: grid; gap: 6px; }
   footer a { color: var(--muted); }
   [hidden] { display: none !important; }
@@ -291,6 +320,23 @@ const I18N = {
     privacy: "Privacidad: no guardamos lo que revisas. A los buscadores solo enviamos nombres de instituciones, dominios y teléfonos, nunca tu mensaje.",
     disclaimer: "Es una orientación, no asesoría legal. Si estás en peligro, llama al",
     builtWith: "Hecho con NVIDIA Nemotron en Nebius Token Factory y Tavily.", openSource: "Código abierto",
+    reportFlowTitle: "Denuncia paso a paso",
+    r1: "¿Ya pagaste, diste tus datos o un código?", yes: "Sí", no: "No",
+    urgentIntro: "Haz esto primero, cuanto antes:", noUrgent: "Bien. Aun así, denunciar ayuda a que bloqueen a quien lo envió.",
+    r2: "Guarda la evidencia antes de borrar nada",
+    r3: "Completa tu denuncia", r3note: "Estos datos solo se usan aquí, en tu teléfono. No se envían a ningún lado.",
+    fDate: "Fecha y hora en que lo recibiste", fState: "Tu estado", fName: "Tu nombre (opcional)", fAmount: "Monto perdido (si aplica)", fAccount: "Cuenta, tarjeta o medio de pago (si aplica)",
+    chooseState: "Elige tu estado",
+    r4: "Envíala por el canal correcto",
+    tOrientacion: "Orientación", tReclamacion: "Reclamación", tDenuncia: "Denuncia formal", tPlataforma: "Reporte en la app",
+    sendEmail: "Enviar por correo", copyOpen: "Copiar y abrir formulario", callNow: "Llamar", whatToSay: "Qué decir", howToReport: "Cómo reportar",
+    share: "Compartir", download: "Descargar", copyDraft: "Copiar texto",
+    copiedOpening: "Texto copiado. Pégalo en el formulario.",
+    emailSubject: "Reporte de posible fraude",
+    draftHeader: "REPORTE DE POSIBLE FRAUDE", dReceived: "Fecha y hora en que lo recibí", dState: "Estado", dName: "Nombre", dAmount: "Monto", dAccount: "Cuenta, tarjeta o medio de pago", dFacts: "Hechos", dEvidence: "Evidencia que conservo",
+    dPaid: "¿Pagué o di datos?", dYes: "Sí", dNo: "No",
+    pickStateHint: "Elige tu estado en el paso 3 para ver la denuncia en línea de tu Fiscalía, si existe.",
+    noOnlineState: "No encontramos denuncia en línea verificada para tu estado: acude al Ministerio Público con este borrador, tu identificación y la evidencia.",
   },
   en: {
     eyebrow: "Free · No sign-up · Built for Mexico",
@@ -332,6 +378,23 @@ const I18N = {
     privacy: "Privacy: we do not store what you check. Search engines only receive institution names, domains and phone numbers, never your message.",
     disclaimer: "This is guidance, not legal advice. If you are in danger, call",
     builtWith: "Built with NVIDIA Nemotron on Nebius Token Factory and Tavily.", openSource: "Open source",
+    reportFlowTitle: "Report it, step by step",
+    r1: "Did you already pay, share your data or a code?", yes: "Yes", no: "No",
+    urgentIntro: "Do this first, as soon as possible:", noUrgent: "Good. Reporting still helps get the sender blocked.",
+    r2: "Keep the evidence before deleting anything",
+    r3: "Complete your report", r3note: "These details stay on your phone. They are never sent anywhere.",
+    fDate: "Date and time you received it", fState: "Your state", fName: "Your name (optional)", fAmount: "Amount lost (if any)", fAccount: "Account, card or payment method (if any)",
+    chooseState: "Choose your state",
+    r4: "Send it through the right channel",
+    tOrientacion: "Guidance", tReclamacion: "Claim", tDenuncia: "Formal complaint", tPlataforma: "In-app report",
+    sendEmail: "Send by email", copyOpen: "Copy & open form", callNow: "Call", whatToSay: "What to say", howToReport: "How to report",
+    share: "Share", download: "Download", copyDraft: "Copy text",
+    copiedOpening: "Text copied. Paste it into the form.",
+    emailSubject: "Reporte de posible fraude",
+    draftHeader: "REPORTE DE POSIBLE FRAUDE", dReceived: "Fecha y hora en que lo recibí", dState: "Estado", dName: "Nombre", dAmount: "Monto", dAccount: "Cuenta, tarjeta o medio de pago", dFacts: "Hechos", dEvidence: "Evidencia que conservo",
+    dPaid: "¿Pagué o di datos?", dYes: "Sí", dNo: "No",
+    pickStateHint: "Choose your state in step 3 to see your prosecutor's online complaint, if there is one.",
+    noOnlineState: "We found no verified online complaint for your state: go to the public prosecutor (Ministerio Público) with this draft, your ID and the evidence.",
   },
 };
 
@@ -485,6 +548,137 @@ function contactActions(contact) {
   return box;
 }
 
+const STATES = ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"];
+const TYPE_LABEL = { orientacion: "tOrientacion", reclamacion: "tReclamacion", denuncia_penal: "tDenuncia", reporte_plataforma: "tPlataforma" };
+
+/**
+ * Guides the person from "this is a scam" to "I reported it": urgent steps if
+ * money or data is already gone, an evidence checklist, local-only details that
+ * complete the draft, and one-tap actions for each verified channel.
+ */
+function renderReport(plan, baseDraft) {
+  const form = { date: "", state: store.get("state") || "", name: "", amount: "", account: "", paid: null };
+  const evidenceChecked = new Set();
+
+  const compose = () => {
+    const lines = [t("draftHeader"), ""];
+    const add = (label, value) => { if (value) lines.push(`${label}: ${value}`); };
+    add(t("dReceived"), form.date ? new Date(form.date).toLocaleString("es-MX", { dateStyle: "long", timeStyle: "short" }) : "");
+    add(t("dState"), form.state);
+    add(I18N.es.dPaid, form.paid === null ? "" : form.paid ? I18N.es.dYes : I18N.es.dNo);
+    add(t("dName"), form.name);
+    add(t("dAmount"), form.amount);
+    add(t("dAccount"), form.account);
+    if (lines.length > 2) lines.push("");
+    lines.push(`${t("dFacts")}:`, baseDraft);
+    if (evidenceChecked.size) lines.push("", `${t("dEvidence")}:`, ...[...evidenceChecked].map((e) => `- ${e}`));
+    return lines.join("\n");
+  };
+
+  const area = el("textarea", { "aria-label": t("reportTitle") });
+  const refresh = () => { area.value = compose(); renderRoutes(); };
+
+  // Step 1: already paid?
+  const urgentBox = el("div");
+  const yes = el("button", { type: "button", "aria-pressed": "false", text: t("yes") });
+  const no = el("button", { type: "button", "aria-pressed": "false", text: t("no") });
+  const pick = (paid) => {
+    form.paid = paid;
+    refresh();
+    yes.setAttribute("aria-pressed", String(paid));
+    no.setAttribute("aria-pressed", String(!paid));
+    urgentBox.replaceChildren();
+    if (paid && plan.urgent.length) {
+      urgentBox.append(el("p", { class: "note", text: t("urgentIntro") }),
+        el("ol", { class: "urgent" }, ...plan.urgent.map((u) => el("li", {}, el("span", { text: u.text + " " }), el("a", { href: u.source, target: "_blank", rel: "noopener", text: t("officialSource") })))));
+    } else if (!paid) {
+      urgentBox.append(el("p", { class: "note", text: t("noUrgent") }));
+    }
+  };
+  yes.addEventListener("click", () => pick(true));
+  no.addEventListener("click", () => pick(false));
+
+  // Step 2: evidence checklist
+  const evidence = el("div", { class: "evidence" });
+  for (const item of plan.evidence) {
+    const box = el("input", { type: "checkbox" });
+    box.addEventListener("change", () => { box.checked ? evidenceChecked.add(item) : evidenceChecked.delete(item); refresh(); });
+    evidence.append(el("label", {}, box, el("span", { text: item })));
+  }
+
+  // Step 3: local-only details
+  const field = (key, label, input, wide) => {
+    input.addEventListener("input", () => { form[key] = input.value.trim(); if (key === "state") store.set("state", input.value); refresh(); });
+    return el("label", wide ? { class: "wide" } : {}, el("span", { text: label }), input);
+  };
+  const stateSel = el("select", {}, el("option", { value: "", text: t("chooseState") }), ...STATES.map((s) => el("option", { value: s, text: s })));
+  stateSel.value = form.state;
+  const fields = el("div", { class: "fields" },
+    field("date", t("fDate"), el("input", { type: "datetime-local" })),
+    field("state", t("fState"), stateSel),
+    field("name", t("fName"), el("input", { type: "text", autocomplete: "name" }), true),
+    field("amount", t("fAmount"), el("input", { type: "text", inputmode: "decimal" })),
+    field("account", t("fAccount"), el("input", { type: "text" })));
+
+  // Step 4: routes with one-tap actions
+  const routesBox = el("div", { class: "list", style: "display:grid;gap:10px" });
+  function renderRoutes() {
+    const visible = plan.routes.filter((r) => !r.state || r.state === form.state);
+    visible.sort((a, b) => Number(Boolean(b.state)) - Number(Boolean(a.state)));
+    const hasStateRoute = plan.routes.some((r) => r.state && r.state === form.state);
+    const hint = !form.state ? t("pickStateHint") : hasStateRoute ? "" : t("noOnlineState");
+    routesBox.replaceChildren(...(hint ? [el("p", { class: "note", text: hint })] : []), ...visible.map((r) => {
+      const acts = el("div", { class: "acts" });
+      if (r.channel === "email") {
+        const body = area.value.length > 1800 ? area.value.slice(0, 1800) + "…" : area.value;
+        acts.append(el("a", { class: "btn", href: `mailto:${r.target}?subject=${encodeURIComponent(t("emailSubject"))}&body=${encodeURIComponent(body)}` }, icon("doc"), el("span", { text: t("sendEmail") })));
+      } else if (r.channel === "form") {
+        const b = el("button", { class: "btn", type: "button" }, icon("copy"), el("span", { text: t("copyOpen") }));
+        b.addEventListener("click", async () => { try { await navigator.clipboard.writeText(area.value); } catch {} window.open(r.target, "_blank", "noopener"); b.lastChild.textContent = t("copiedOpening"); });
+        acts.append(b);
+      } else if (r.channel === "phone") {
+        acts.append(el("a", { class: "btn", href: `tel:${r.target.replace(/\D/g, "")}` }, icon("phone"), el("span", { text: `${t("callNow")} ${r.target}` })));
+      } else {
+        acts.append(el("a", { class: "btn soft", href: r.target, target: "_blank", rel: "noopener" }, icon("info"), el("span", { text: t("howToReport") })));
+      }
+      const card = el("div", { class: `route${r.state ? " featured" : ""}` },
+        el("div", { class: "top" }, el("strong", { text: r.name }), el("span", { class: "rtype", text: t(TYPE_LABEL[r.type]) })),
+        el("span", { class: "when", text: r.when }), acts);
+      if (r.script?.length) {
+        const details = el("details", {}, el("summary", { text: t("whatToSay") }), el("ul", { class: "script" }, ...r.script.map((x) => el("li", { text: x }))));
+        card.append(details);
+      }
+      card.append(el("a", { class: "src", href: r.source, target: "_blank", rel: "noopener", text: t("officialSource") }));
+      return card;
+    }));
+  }
+
+  // Draft actions
+  const copy = el("button", { class: "ghost", type: "button" }, icon("copy"), el("span", { text: t("copyDraft") }));
+  copy.addEventListener("click", async () => { try { await navigator.clipboard.writeText(area.value); copy.lastChild.textContent = t("copied"); } catch { area.select(); } });
+  const download = el("button", { class: "ghost", type: "button" }, icon("doc"), el("span", { text: t("download") }));
+  download.addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([area.value], { type: "text/plain;charset=utf-8" }));
+    el("a", { href: url, download: "reporte-fraude.txt" }).click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  const actions = el("div", { class: "row" }, copy, download);
+  if (navigator.share) {
+    const share = el("button", { class: "ghost", type: "button" }, icon("msg"), el("span", { text: t("share") }));
+    share.addEventListener("click", () => navigator.share({ title: t("emailSubject"), text: area.value }).catch(() => {}));
+    actions.append(share);
+  }
+
+  const step = (n, title, ...content) => el("div", { class: "rstep" }, el("h3", {}, el("span", { class: "n", text: String(n) }), el("span", { text: title })), ...content);
+  refresh();
+  return section(t("reportFlowTitle"), "flag",
+    el("div", { class: "report-flow" },
+      step(1, t("r1"), el("div", { class: "yesno" }, yes, no), urgentBox),
+      step(2, t("r2"), evidence),
+      step(3, t("r3"), fields, el("p", { class: "local-note", text: t("r3note") }), el("div", { class: "report", style: "margin-top:10px" }, area), actions),
+      step(4, t("r4"), routesBox)));
+}
+
 function render({ verdict: v, checks }, seconds) {
   const out = $("result");
   out.replaceChildren();
@@ -524,13 +718,7 @@ function render({ verdict: v, checks }, seconds) {
     out.append(section(t("checksTitle"), "search", list));
   }
 
-  if (v.reportDraft) {
-    const area = el("textarea", { "aria-label": t("reportTitle") });
-    area.value = v.reportDraft;
-    const copy = el("button", { class: "ghost", type: "button" }, icon("copy"), el("span", { text: t("copy") }));
-    copy.addEventListener("click", async () => { try { await navigator.clipboard.writeText(area.value); copy.lastChild.textContent = t("copied"); } catch { area.select(); } });
-    out.append(section(t("reportTitle"), "doc", el("p", { class: "note", text: t("reportNote") }), el("div", { class: "report" }, area), el("div", { class: "row" }, copy)));
-  }
+  if (v.report && v.reportDraft) out.append(renderReport(v.report, v.reportDraft));
 
   const again = el("button", { class: "ghost", type: "button" }, icon("back"), el("span", { text: t("again") }));
   again.addEventListener("click", () => { out.hidden = true; $("text").value = ""; window.scrollTo({ top: 0, behavior: "smooth" }); });

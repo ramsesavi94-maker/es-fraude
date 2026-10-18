@@ -30,7 +30,12 @@ The answer always includes:
 - **Warning signs**, each one backed by a **verbatim quote** from the message or from an official page.
 - **What was checked**: links compared with official domains, lookalike domains, official alerts about the impersonated institution, phone numbers in official lists, and lender registration searches.
 - **What to do**, plus **where to confirm or report**, with tap-to-call numbers.
-- **A draft complaint** you can copy.
+- **Report it, step by step**, so victims actually file the complaint:
+  1. *Did you already pay or share data?* If yes, urgent steps first: block the card, dispute charges within the legal window (90 days to claim, 45 days for the bank to answer), what to tell the bank about a deceived SPEI transfer and its CEP receipt, how to recover a hijacked WhatsApp account.
+  2. *Evidence checklist* to keep before deleting anything.
+  3. *Complete the report*: date, state, name, amount and account are filled **only in the browser** and merged into a draft complaint (in Spanish, ready for Mexican authorities). Copy, download or share it.
+  4. *Send it through the right channel*, with one-tap actions: open the state prosecutor's online complaint (Mexico City, State of Mexico, Nuevo León) with the text already copied, email the cyber police or SAT with subject and body pre-filled, call 089 with a script of what to say, or report the account inside WhatsApp or Facebook. Each route says whether it is guidance, a claim or a formal criminal complaint.
+  Every route, deadline and contact comes from official sources ([research](docs/research/rutas-denuncia.md), `src/report.ts`).
 
 ## How it works
 
