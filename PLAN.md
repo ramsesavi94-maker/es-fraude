@@ -71,3 +71,13 @@ entrada (texto | captura | descripción de llamada | nombre de app)
 
 - Bloquear llamadas o leer el teléfono del usuario.
 - Dar asesoría legal o financiera; solo orientar hacia canales oficiales.
+
+## Evaluación (18-10-2026)
+
+| Conjunto | Casos | Fraudes detectados | Legítimos sin falsa alarma | Uso |
+|---|---|---|---|---|
+| `eval/cases.json` | 45 | 30/30 | 15/15 | Se usó para ajustar las reglas |
+| `eval/holdout.json` | 40 | 25/25 | 15/15 | Medido sin ajustes primero (24/25, 14/15); después se corrigieron sus fallos |
+| `eval/third.json` | 40 | **25/25** | **15/15** | **No visto: medido una sola vez, sin ajustes** (27 casos difíciles; patrón correcto 15/15) |
+
+Los tres conjuntos los creó Codex a partir de alertas oficiales; son mensajes sintéticos. Falta probar con mensajes reales.
