@@ -7,8 +7,8 @@
     "test": "tsx --test test/*.test.ts",
     "typecheck": "tsc",
     "try": "tsx --env-file=.env scripts/try.ts",
-    "dev": "tsx --env-file=.env src/server.ts",
-    "start": "tsx src/server.ts"
+    "dev": "tsx --env-file=.env src/local.ts",
+    "start": "tsx src/local.ts"
   },
   "keywords": [],
   "author": "",

@@ -8,4 +8,4 @@ COPY public ./public
 COPY tsconfig.json ./
 EXPOSE 8787
 USER node
-CMD ["npx", "tsx", "src/server.ts"]
+CMD ["npx", "tsx", "src/local.ts"]
