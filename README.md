@@ -40,6 +40,16 @@ The answer always includes:
   4. *Send it through the right channel*, with one-tap actions: open the state prosecutor's online complaint (Mexico City, State of Mexico, Nuevo León) with the text already copied, email the cyber police or SAT with subject and body pre-filled, call 089 with a script of what to say, or report the account inside WhatsApp or Facebook. Each route says whether it is guidance, a claim or a formal criminal complaint.
   Every route, deadline and contact comes from official sources ([research](docs/research/rutas-denuncia.md), `src/report.ts`).
 
+## How it differs
+
+General-purpose scam checkers such as [Bitdefender Scamio](https://www.bitdefender.com/es-es/consumer/scamio), [Norton Genie](https://mx.norton.com/feature/ai-scam-protection) and [Truecaller](https://www.truecaller.com/scam-checker) already help people ask "is this a scam?". ¿Es fraude? is built specifically for Mexico and for what happens next:
+
+- **Grounded in Mexican official sources.** It checks links against the real domains of the SAT, IMSS, CONDUSEF, Banxico and major banks, and it searches official alerts from CONDUSEF, the SAT and state cyber police. Every scam pattern comes from an alert by a Mexican authority.
+- **From verdict to action.** Victims get verified urgent steps (legal deadlines to dispute charges, what to tell the bank about a SPEI transfer, how to recover WhatsApp) and the right reporting route for their state, with a draft complaint ready to send. CDMX, Estado de México and Nuevo León have online prosecutor complaints; for other states the app explains how to file in person.
+- **Contacts and steps are never invented.** The model classifies and explains; phone numbers, emails, deadlines and routes come only from a verified catalog with official sources.
+- **It never says "safe".** At most it says no clear signs were found and how to confirm through an official channel.
+- **Open source and measured.** The code, the catalog research and the evaluation sets are public, so anyone can check how it decides.
+
 ## How it works
 
 ```

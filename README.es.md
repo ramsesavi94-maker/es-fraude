@@ -40,6 +40,16 @@ La respuesta siempre incluye:
   4. *Envíala por el canal correcto*, con botones de un toque: abrir la denuncia en línea de la Fiscalía de tu estado (Ciudad de México, Estado de México, Nuevo León) con el texto ya copiado, mandar un correo a la policía cibernética o al SAT con asunto y texto ya escritos, llamar al 089 con un guion de qué decir, o reportar la cuenta dentro de WhatsApp o Facebook. Cada canal aclara si es orientación, reclamación o denuncia penal formal.
   Todas las rutas, plazos y contactos salen de fuentes oficiales ([investigación](docs/research/rutas-denuncia.md), `src/report.ts`).
 
+## En qué se diferencia
+
+Ya existen revisores de fraude de uso general, como [Bitdefender Scamio](https://www.bitdefender.com/es-es/consumer/scamio), [Norton Genie](https://mx.norton.com/feature/ai-scam-protection) o [Truecaller](https://www.truecaller.com/scam-checker), que ayudan a preguntar "¿esto es fraude?". ¿Es fraude? está hecho específicamente para México y para lo que sigue después:
+
+- **Basado en fuentes oficiales mexicanas.** Compara los enlaces con los dominios reales del SAT, IMSS, CONDUSEF, Banxico y los principales bancos, y busca alertas oficiales de CONDUSEF, del SAT y de las policías cibernéticas. Cada tipo de fraude sale de una alerta de una autoridad mexicana.
+- **Del veredicto a la acción.** La víctima recibe pasos urgentes verificados (plazos legales para reclamar cargos, qué decirle al banco sobre una transferencia SPEI, cómo recuperar WhatsApp) y la ruta de denuncia correcta para su estado, con un borrador listo para enviar. CDMX, Estado de México y Nuevo León tienen denuncia en línea ante la Fiscalía; para otros estados, la app explica cómo hacerla en persona.
+- **Nunca inventa contactos ni pasos.** El modelo clasifica y explica; los teléfonos, correos, plazos y rutas salen solo de un catálogo verificado con fuentes oficiales.
+- **Nunca dice "es seguro".** Como mucho, dice que no encontró señales claras y cómo confirmarlo por un canal oficial.
+- **Código abierto y medido.** El código, la investigación del catálogo y los conjuntos de evaluación son públicos, para que cualquiera pueda revisar cómo decide.
+
 ## Cómo funciona
 
 ```
