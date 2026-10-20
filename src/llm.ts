@@ -35,6 +35,8 @@ export async function chat(model: string, messages: ChatMessage[], { maxTokens =
     method: "POST",
     headers: { Authorization: `Bearer ${process.env.NEBIUS_API_KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature, ...(jsonMode && { response_format: { type: "json_object" } }) }),
+    // A stuck call must not leave the person waiting forever.
+    signal: AbortSignal.timeout(45_000),
   });
   if (!res.ok) throw new Error(`Token Factory ${res.status} (${model}): ${(await res.text()).slice(0, 300)}`);
 

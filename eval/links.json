@@ -1,0 +1,332 @@
+[
+  {
+    "id": "k01",
+    "kind": "link",
+    "text": "https://bbva-validacion-ejemplo-ficticio-k01.xyz/desbloquear",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "suplantacion_bancaria",
+      "dominio_con_guiones",
+      "tld_xyz"
+    ],
+    "source": "https://www.bbva.mx/personas/centro-de-ayuda/consejos-de-seguridad/sitios-apocrifos.html",
+    "note": "Dominio inventado que simula un desbloqueo de BBVA fuera de su dominio oficial."
+  },
+  {
+    "id": "k02",
+    "kind": "link",
+    "text": "https://banorte-seguridad-ejemplo-ficticio-k02.top/actualizar",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "suplantacion_bancaria",
+      "palabras_extra",
+      "tld_top"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/293843",
+    "note": "Dominio inventado que reproduce el pretexto de actualizar una cuenta bancaria."
+  },
+  {
+    "id": "k03",
+    "kind": "link",
+    "text": "https://santander-premios-ejemplo-ficticio-k03.shop/reclamar",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "suplantacion_bancaria",
+      "premio",
+      "tld_shop"
+    ],
+    "source": "https://www.condusef.gob.mx/index.php/i?p=tipos-de-fraude",
+    "note": "Dominio inventado que suplanta a Santander mediante una supuesta promoción."
+  },
+  {
+    "id": "k04",
+    "kind": "link",
+    "text": "https://sat.gob.mx.validar-datos.example/buzon",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "subdominio_enganoso",
+      "suplantacion_sat"
+    ],
+    "source": "https://www.gob.mx/sat/acciones-y-programas/sitioswebfalsos",
+    "note": "difícil: ejemplo ficticio donde sat.gob.mx es un prefijo del dominio reservado validar-datos.example."
+  },
+  {
+    "id": "k05",
+    "kind": "link",
+    "text": "https://imss-auditorias.example/notificacion",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "suplantacion_imss",
+      "dominio_con_guiones"
+    ],
+    "source": "https://www.imss.gob.mx/sites/all/statics/i2f_news/IMSS.%20Bolet%C3%ADn.%20116_0.pdf",
+    "note": "Ejemplo ficticio basado en la alerta del IMSS sobre supuestas notificaciones de auditoría."
+  },
+  {
+    "id": "k06",
+    "kind": "link",
+    "text": "http://cfe-pago-urgente.example/evitar-corte",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "suplantacion_cfe",
+      "http_sin_tls",
+      "urgencia"
+    ],
+    "source": "https://www.cfe.gob.mx/cdn/2019/Archivos/Boletines/166%20-%20bole%20fraudes%20vf.pdf",
+    "note": "Ejemplo ficticio de cobro que suplanta a CFE y usa HTTP, aunque HTTP por sí solo no demuestra fraude."
+  },
+  {
+    "id": "k07",
+    "kind": "link",
+    "text": "https://estafeta-reentrega.example/pagar",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "suplantacion_paqueteria",
+      "pago_reentrega"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/la-sspc-advierte-sobre-paginas-de-comercio-electronicas-y-servicios-de-paqueteria-falsos",
+    "note": "Ejemplo ficticio de una solicitud de pago para liberar o volver a entregar un paquete."
+  },
+  {
+    "id": "k08",
+    "kind": "link",
+    "text": "https://liverpool-liquidacion.example/ventas",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "suplantacion_tienda",
+      "palabras_extra"
+    ],
+    "source": "https://www.ssc.cdmx.gob.mx/comunicacion/nota/COM2038-16-07-2025",
+    "note": "Ejemplo ficticio de una tienda que utiliza una marca conocida como gancho para ofertas falsas."
+  },
+  {
+    "id": "k09",
+    "kind": "link",
+    "text": "https://mercadolibre.com.mx.cobro-seguro.example/confirmar",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "subdominio_enganoso",
+      "suplantacion_tienda"
+    ],
+    "source": "https://www.gob.mx/sspc/prensa/la-sspc-advierte-sobre-paginas-de-comercio-electronicas-y-servicios-de-paqueteria-falsos",
+    "note": "difícil: el dominio ficticio es cobro-seguro.example y la cadena de Mercado Libre solamente aparece como subdominio."
+  },
+  {
+    "id": "k10",
+    "kind": "link",
+    "text": "https://sаt.example/devoluciones",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "homografo_unicode",
+      "suplantacion_sat"
+    ],
+    "source": "https://www.gob.mx/gncertmx/articulos/105210",
+    "note": "difícil: ejemplo ficticio cuya letra а es cirílica U+0430 y visualmente imita la a latina de SAT."
+  },
+  {
+    "id": "k11",
+    "kind": "link",
+    "text": "https://xn--st-6kc.example/devoluciones",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "punycode",
+      "homografo_unicode",
+      "suplantacion_sat"
+    ],
+    "source": "https://www.gob.mx/gncertmx/articulos/105210",
+    "note": "difícil: representación punycode del homógrafo ficticio sаt, sin que el uso de punycode por sí solo implique fraude."
+  },
+  {
+    "id": "k12",
+    "kind": "link",
+    "text": "http://192.0.2.18/banorte/verificar-cuenta",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "host_ip",
+      "http_sin_tls",
+      "marca_en_ruta"
+    ],
+    "source": "https://www.gob.mx/gncertmx/articulos/105210",
+    "note": "Ejemplo ficticio con una IP reservada para documentación que coloca el nombre del banco solamente en la ruta."
+  },
+  {
+    "id": "k13",
+    "kind": "link",
+    "text": "https://bit.ly/EjemploFicticioEsFraudeK13SAT",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "acortador"
+    ],
+    "source": "https://www.bbva.com/es/innovacion/que-son-los-enlaces-maliciosos-y-como-protegerse-ante-esta-amenaza/",
+    "note": "difícil: ruta ficticia no creada ni resuelta, etiquetada como fraude por el escenario simulado y no por utilizar bit.ly."
+  },
+  {
+    "id": "k14",
+    "kind": "link",
+    "text": "https://cutt.ly/EjemploFicticioEsFraudeK14CFE",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "acortador"
+    ],
+    "source": "https://www.bbva.com/es/innovacion/que-son-los-enlaces-maliciosos-y-como-protegerse-ante-esta-amenaza/",
+    "note": "difícil: ruta ficticia no creada ni resuelta cuyo destino fraudulento es una premisa del caso y no puede inferirse del acortador."
+  },
+  {
+    "id": "k15",
+    "kind": "link",
+    "text": "https://tinyurl.com/EjemploFicticioEsFraudeK15Paquete",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "acortador"
+    ],
+    "source": "https://www.bbva.com/es/innovacion/que-son-los-enlaces-maliciosos-y-como-protegerse-ante-esta-amenaza/",
+    "note": "difícil: ruta ficticia no creada ni resuelta que representa un engaño de paquetería sin atribuir malicia al servicio TinyURL."
+  },
+  {
+    "id": "k16",
+    "kind": "link",
+    "text": "SAT Notificaciones <sat.ejemplo.ficticio.esfraude.k16@gmail.com>",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "correo_gratuito",
+      "nombre_visible_incongruente",
+      "suplantacion_sat"
+    ],
+    "source": "https://www.gob.mx/sat/acciones-y-programas/correos-falsos-identificados",
+    "note": "Cuenta ficticia no creada que utiliza Gmail mientras el nombre visible pretende representar al SAT."
+  },
+  {
+    "id": "k17",
+    "kind": "link",
+    "text": "IMSS Auditorías <imss.ejemplo.ficticio.esfraude.k17@hotmail.com>",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "correo_gratuito",
+      "nombre_visible_incongruente",
+      "suplantacion_imss"
+    ],
+    "source": "https://www.imss.gob.mx/sites/all/statics/i2f_news/IMSS.%20Bolet%C3%ADn.%20116_0.pdf",
+    "note": "Cuenta ficticia no creada que simula una comunicación de auditoría del IMSS desde Hotmail."
+  },
+  {
+    "id": "k18",
+    "kind": "link",
+    "text": "BBVA Seguridad <bbva.ejemplo.ficticio.esfraude.k18@outlook.com>",
+    "expected": "fraude",
+    "expectedPatterns": [
+      "correo_gratuito",
+      "nombre_visible_incongruente",
+      "suplantacion_bancaria"
+    ],
+    "source": "https://www.bbva.mx/personas/centro-de-ayuda/antifraude.html",
+    "note": "Cuenta ficticia no creada cuyo nombre visible suplanta al banco mientras el dominio corresponde a Outlook."
+  },
+  {
+    "id": "k19",
+    "kind": "link",
+    "text": "SAT Denuncias <denuncias@sat.gob.mx>",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.gob.mx/sat/prensa/el-sat-identifica-sitios-falsos-e-invita-a-los-contribuyentes-a-conocer-sus-medios-oficiales-32-2022?idiom=es",
+    "note": "difícil: dirección publicada por el SAT con nombre visible congruente, aunque el texto del remitente no autentica un mensaje recibido."
+  },
+  {
+    "id": "k20",
+    "kind": "link",
+    "text": "https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.imss.gob.mx/empresas-personas-trabajadoras-plataformas-digitales",
+    "note": "difícil: el subdominio oficial largo y los guiones de la ruta pertenecen a un trámite enlazado por el IMSS."
+  },
+  {
+    "id": "k21",
+    "kind": "link",
+    "text": "https://www.gob.mx/sat/prensa/el-sat-identifica-sitios-falsos-e-invita-a-los-contribuyentes-a-conocer-sus-medios-oficiales-32-2022?idiom=es",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.gob.mx/sat/prensa/el-sat-identifica-sitios-falsos-e-invita-a-los-contribuyentes-a-conocer-sus-medios-oficiales-32-2022?idiom=es",
+    "note": "difícil: el enlace oficial contiene una ruta extensa y un parámetro de idioma que no son indicadores de fraude."
+  },
+  {
+    "id": "k22",
+    "kind": "link",
+    "text": "alertasphishing@condusef.gob.mx",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.condusef.gob.mx/?idc=994&idcat=1&p=contenido",
+    "note": "Dirección publicada por CONDUSEF para recibir reportes de phishing, sin que esto autentique cualquier mensaje que la muestre."
+  },
+  {
+    "id": "k23",
+    "kind": "link",
+    "text": "https://www.banxico.org.mx/",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.banxico.org.mx/",
+    "note": "El Banco de México utiliza oficialmente banxico.org.mx."
+  },
+  {
+    "id": "k24",
+    "kind": "link",
+    "text": "https://www.bbva.mx/",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.bbva.mx/personas/centro-de-ayuda/consejos-de-seguridad/sitios-apocrifos.html",
+    "note": "BBVA identifica expresamente esta dirección como uno de sus sitios oficiales."
+  },
+  {
+    "id": "k25",
+    "kind": "link",
+    "text": "https://www.banorte.com/",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.banorte.com/",
+    "note": "Portal oficial de Banorte con terminación .com."
+  },
+  {
+    "id": "k26",
+    "kind": "link",
+    "text": "https://www.santander.com.mx/",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.santander.com.mx/",
+    "note": "Portal oficial de Santander México bajo su dominio comercial."
+  },
+  {
+    "id": "k27",
+    "kind": "link",
+    "text": "https://app.cfe.mx/normateca/Documentos.aspx",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://beta.cfe.mx/transparencia_etica/transparencia/Actas%20de%20Comit%20Transparencia/43%20Cuadrag%C3%A9sima%20tercera%20sesi%C3%B3n2021%2030noviembre.pdf",
+    "note": "Dirección de la Normateca publicada en documentación oficial de CFE, cuya disponibilidad actual no quedó confirmada."
+  },
+  {
+    "id": "k28",
+    "kind": "link",
+    "text": "https://www.liverpool.com.mx/tienda/home",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.liverpool.com.mx/tienda/home",
+    "note": "difícil: Liverpool es una tienda conocida cuyo dominio comercial oficial es legítimo aunque no pertenezca a un banco o gobierno."
+  },
+  {
+    "id": "k29",
+    "kind": "link",
+    "text": "https://www.mercadolibre.com.mx/?LanguageId=1",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.mercadolibre.com.mx/?LanguageId=1",
+    "note": "Página oficial de Mercado Libre México con un parámetro de idioma."
+  },
+  {
+    "id": "k30",
+    "kind": "link",
+    "text": "https://www.estafeta.com/",
+    "expected": "legitimo",
+    "expectedPatterns": [],
+    "source": "https://www.estafeta.com/",
+    "note": "Portal oficial de la empresa mexicana de paquetería Estafeta."
+  }
+]

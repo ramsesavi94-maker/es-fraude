@@ -21,6 +21,7 @@ People do not need another awareness campaign. They need an answer about **the m
 |---|---|
 | Message | SMS, WhatsApp or email text |
 | Screenshot | A photo of the chat or SMS; read by a vision model |
+| Link or email | `https://bit.ly/…`, `SAT Avisos <avisos@gmail.com>`; never opened, only inspected |
 | Phone call | "They said they were from my bank and asked for the code I got by SMS…" |
 | Loan app | Just the app or lender name |
 
@@ -30,7 +31,7 @@ The answer always includes:
 
 - **Risk level**: high, medium or "no clear signs". It **never says a message is safe**; at most it says no signs were found and tells you how to confirm through an official channel.
 - **Warning signs**, each one backed by a **verbatim quote** from the message or from an official page.
-- **What was checked**: links compared with official domains, lookalike domains, official alerts about the impersonated institution, phone numbers in official lists, and lender registration searches.
+- **What was checked**: links and emails compared with official domains, lookalike domains, disguised letters (punycode), shorteners, IP addresses, free email accounts posing as institutions, **domain age from public RDAP records**, official alerts about the impersonated institution, phone numbers in official lists, and lender registration searches. Links are never opened.
 - **What to do**, plus **where to confirm or report**, with tap-to-call numbers.
 - **Report it, step by step**, so victims actually file the complaint:
   1. *Did you already pay or share data?* If yes, urgent steps first: block the card, dispute charges within the legal window (90 days to claim, 45 days for the bank to answer), what to tell the bank about a deceived SPEI transfer and its CEP receipt, how to recover a hijacked WhatsApp account.
@@ -88,6 +89,7 @@ Three sets of synthetic cases written from official alerts (CONDUSEF, SAT, SSPC,
 | `eval/holdout.json` | 40 | 25/25 | 15/15 | First run before tuning: 24/25 and 14/15 |
 | `eval/third.json` | 40 | **25/25** | **15/15** | **Unseen, measured once with no changes**; 27 hard cases; pattern correct 15/15 |
 | `eval/third.json`, answers in English | 40 | 25/25 | 15/15 | Same set with `--lang en`; pattern correct 14/15 |
+| `eval/links.json` (links and emails only) | 30 | **18/18** | **12/12** | **Unseen, measured once**: lookalike domains, deceptive subdomains, Cyrillic letters, IP hosts, shorteners, free accounts posing as SAT/IMSS/BBVA |
 
 Median latency 5.7–6.8 s, p90 7.2–10.1 s. The cases are synthetic; testing with real messages from real people is the next step.
 
@@ -134,6 +136,7 @@ Without `TAVILY_API_KEY` the app still works, using only the deterministic check
 | `src/report.ts` | Verified reporting routes, urgent steps and evidence checklist |
 | `src/i18n.ts` | Spanish and English text written by the app |
 | `src/official.ts` | Hostname and lookalike-domain checks |
+| `src/linkcheck.ts` | Link and email checks and domain age (RDAP) |
 | `src/tavily.ts` | Search limited to names, domains and phone numbers |
 | `src/llm.ts` | Token Factory client |
 | `src/app.ts` | HTTP API and limits |

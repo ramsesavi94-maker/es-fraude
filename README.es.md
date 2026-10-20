@@ -21,6 +21,7 @@ La gente no necesita otra campaña de prevención. Necesita una respuesta sobre 
 |---|---|
 | Mensaje | Texto de SMS, WhatsApp o correo |
 | Captura | Foto del chat o del SMS; la lee un modelo de visión |
+| Enlace o correo | `https://bit.ly/…`, `SAT Avisos <avisos@gmail.com>`; nunca se abre, solo se revisa |
 | Llamada | "Me dijeron que eran de mi banco y me pidieron el código que me llegó por SMS…" |
 | App de préstamo | Solo el nombre de la app o de la financiera |
 
@@ -30,7 +31,7 @@ La respuesta siempre incluye:
 
 - **Nivel de riesgo**: alto, medio o "sin señales claras". **Nunca dice que un mensaje es seguro**; como mucho, dice que no encontró señales y te indica cómo confirmarlo por un canal oficial.
 - **Señales de alerta**, cada una respaldada por una **cita textual** del mensaje o de una página oficial.
-- **Lo que se revisó**: enlaces comparados con dominios oficiales, dominios que imitan a una institución, alertas oficiales sobre la institución suplantada, teléfonos en listas oficiales y búsquedas del registro de financieras.
+- **Lo que se revisó**: enlaces y correos comparados con dominios oficiales, dominios que imitan a una institución, letras disfrazadas (punycode), acortadores, direcciones IP, cuentas de correo gratuitas que dicen ser instituciones, **antigüedad del dominio según el registro público RDAP**, alertas oficiales sobre la institución suplantada, teléfonos en listas oficiales y búsquedas del registro de financieras. Los enlaces nunca se abren.
 - **Qué hacer** y **dónde confirmar o denunciar**, con números que se marcan con un toque.
 - **Denuncia paso a paso**, para que las víctimas sí denuncien:
   1. *¿Ya pagaste o diste tus datos?* Si es así, primero los pasos urgentes: bloquear la tarjeta, reclamar los cargos dentro del plazo legal (90 días para reclamar y 45 días para que el banco responda), qué decirle al banco si transferiste por engaño y cómo obtener el comprobante CEP, y cómo recuperar una cuenta de WhatsApp robada.
@@ -88,6 +89,7 @@ Tres conjuntos de casos sintéticos escritos a partir de alertas oficiales (COND
 | `eval/holdout.json` | 40 | 25/25 | 15/15 | Primera medición antes de ajustar: 24/25 y 14/15 |
 | `eval/third.json` | 40 | **25/25** | **15/15** | **No visto: medido una sola vez, sin cambios**; 27 casos difíciles; patrón correcto 15/15 |
 | `eval/third.json`, respuestas en inglés | 40 | 25/25 | 15/15 | El mismo conjunto con `--lang en`; patrón correcto 14/15 |
+| `eval/links.json` (solo enlaces y correos) | 30 | **18/18** | **12/12** | **No visto, medido una sola vez**: dominios que imitan, subdominios engañosos, letras cirílicas, direcciones IP, acortadores y cuentas gratuitas que dicen ser SAT, IMSS o BBVA |
 
 Latencia mediana de 5.7 a 6.8 s, p90 de 7.2 a 10.1 s. Los casos son sintéticos; el siguiente paso es probar con mensajes reales de personas reales.
 
@@ -134,6 +136,7 @@ Sin `TAVILY_API_KEY` la app sigue funcionando, solo con las verificaciones sin m
 | `src/report.ts` | Rutas de denuncia, pasos urgentes y lista de evidencia verificados |
 | `src/i18n.ts` | Textos de la app en español e inglés |
 | `src/official.ts` | Comparación de dominios y detección de imitaciones |
+| `src/linkcheck.ts` | Revisión de enlaces y correos, y antigüedad del dominio (RDAP) |
 | `src/tavily.ts` | Búsqueda limitada a nombres, dominios y teléfonos |
 | `src/llm.ts` | Cliente de Token Factory |
 | `src/app.ts` | API HTTP y límites de uso |
