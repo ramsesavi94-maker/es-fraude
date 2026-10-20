@@ -12,6 +12,7 @@ export interface Messages {
   imitates: (entity: string | null, real: string) => string;
   brandMatches: (entity: string | null) => string;
   unrelatedDomain: (real: string) => string;
+  unlistedDomain: (real: string) => string;
   lenderCheck: (entity: string) => string;
   lenderFound: (n: number) => string;
   lenderNotFound: string;
@@ -27,6 +28,19 @@ export interface Messages {
   phoneCheck: (phone: string) => string;
   phoneFound: string;
   phoneNotFound: string;
+  email: (address: string) => string;
+  emailOfficial: (owner: string) => string;
+  freeEmail: (provider: string, entity: string | null) => string;
+  displayMismatch: (display: string, domain: string) => string;
+  shortener: string;
+  ipHost: string;
+  disguised: string;
+  insecure: string;
+  riskyTld: (tld: string) => string;
+  age: (domain: string) => string;
+  ageNew: (days: number) => string;
+  ageRecent: (days: number) => string;
+  ageOld: (date: string) => string;
   noSignalsSummary: string;
   generalSteps: string[];
   unverifiedAppSummary: string;
@@ -42,6 +56,7 @@ export const MESSAGES: Record<Lang, Messages> = {
     imitates: (e, r) => `Imita el nombre de ${e}, pero no es su dominio: el dominio real es ${r}. Es una técnica común de fraude.`,
     brandMatches: (e) => `El dominio coincide con el nombre de ${e}. No está en nuestra lista verificada; aun así, lo más seguro es entrar tú mismo escribiendo la dirección.`,
     unrelatedDomain: (r) => `El dominio (${r}) no corresponde a la institución que firma el mensaje ni a un banco o dependencia de gobierno verificados.`,
+    unlistedDomain: (r) => `${r} no es un banco ni una dependencia de gobierno de nuestra lista verificada.`,
     lenderCheck: (e) => `Registro y alertas de "${e}"`,
     lenderFound: (n) => `Encontré ${n} páginas oficiales que mencionan esta app o empresa; revisa qué dicen. Aparecer en un sitio oficial no la hace confiable.`,
     lenderNotFound: "No encontré menciones en sitios oficiales. Busca su razón social en SIPRES de CONDUSEF antes de pedir un préstamo.",
@@ -57,6 +72,19 @@ export const MESSAGES: Record<Lang, Messages> = {
     phoneCheck: (p) => `Número ${p} en listas oficiales`,
     phoneFound: "Este número aparece en una fuente oficial relacionada con fraudes.",
     phoneNotFound: "Este número no aparece en las listas oficiales que revisé. Eso no lo hace confiable.",
+    email: (a) => `Correo ${a}`,
+    emailOfficial: (o) => `Viene de un dominio oficial de ${o}. Aun así, un correo puede falsificar su remitente: no abras enlaces ni descargues archivos; entra tú mismo al sitio.`,
+    freeEmail: (p, e) => `Es una cuenta gratuita de ${p}${e ? `, pero dice ser de ${e}` : ""}. Bancos y dependencias de gobierno no escriben desde cuentas gratuitas.`,
+    displayMismatch: (d, dom) => `El nombre que aparece ("${d}") no corresponde al dominio real del correo (${dom}). Es una forma común de suplantar a una institución.`,
+    shortener: "Es un acortador de enlaces: oculta a dónde te lleva realmente. No lo abras; si el aviso es real, la institución te dará su sitio oficial.",
+    ipHost: "El enlace usa una dirección numérica (IP) en lugar de un nombre de sitio. Bancos y gobierno no hacen eso.",
+    disguised: "El dominio usa caracteres especiales que pueden imitar letras normales (por ejemplo, una «а» de otro alfabeto). Es una técnica para disfrazar sitios falsos.",
+    insecure: "El enlace no usa conexión segura (https). Ningún banco ni dependencia te pediría datos así.",
+    riskyTld: (t) => `Termina en .${t}, una terminación barata muy usada en fraudes. Por sí sola no prueba nada.`,
+    age: (d) => `Antigüedad de ${d}`,
+    ageNew: (n) => `Se registró hace ${n} días. Los sitios de fraude suelen ser muy nuevos.`,
+    ageRecent: (n) => `Se registró hace ${n} días (menos de 6 meses).`,
+    ageOld: (d) => `Se registró el ${d}. Un dominio antiguo no garantiza que sea legítimo.`,
     noSignalsSummary:
       "No encontré señales claras de fraude. Eso no garantiza que sea seguro: si te piden datos, pagos o algo urgente, confírmalo directamente con la institución por un canal que busques tú.",
     generalSteps: ["Si tienes dudas, confirma directamente con la institución por un número o sitio que busques tú, no por los datos del mensaje."],
@@ -75,6 +103,7 @@ export const MESSAGES: Record<Lang, Messages> = {
     imitates: (e, r) => `Imitates the name of ${e} but is not its domain: the real domain is ${r}. This is a common scam technique.`,
     brandMatches: (e) => `The domain matches the name of ${e}. It is not on our verified list; to be safe, type the address yourself.`,
     unrelatedDomain: (r) => `The domain (${r}) does not belong to the sender named in the message, nor to a verified bank or government agency.`,
+    unlistedDomain: (r) => `${r} is not a bank or government agency on our verified list.`,
     lenderCheck: (e) => `Registration and alerts for "${e}"`,
     lenderFound: (n) => `Found ${n} official pages that mention this app or company; check what they say. Being mentioned on an official site does not make it trustworthy.`,
     lenderNotFound: "No mentions on official sites. Look up its legal name in CONDUSEF's SIPRES registry before borrowing.",
@@ -90,6 +119,19 @@ export const MESSAGES: Record<Lang, Messages> = {
     phoneCheck: (p) => `Number ${p} in official lists`,
     phoneFound: "This number appears in an official source about scams.",
     phoneNotFound: "This number is not in the official lists we checked. That does not make it trustworthy.",
+    email: (a) => `Email ${a}`,
+    emailOfficial: (o) => `Comes from an official ${o} domain. Even so, email senders can be forged: do not open links or attachments; go to the website yourself.`,
+    freeEmail: (p, e) => `It is a free ${p} account${e ? `, yet it claims to be ${e}` : ""}. Banks and government agencies do not write from free accounts.`,
+    displayMismatch: (d, dom) => `The displayed name ("${d}") does not match the email's real domain (${dom}). This is a common way to impersonate an institution.`,
+    shortener: "It is a link shortener: it hides where it really takes you. Do not open it; if the notice is real, the institution will give you its official site.",
+    ipHost: "The link uses a numeric (IP) address instead of a site name. Banks and government agencies do not do that.",
+    disguised: "The domain uses special characters that can imitate normal letters (for example, an «а» from another alphabet). This is a way to disguise fake sites.",
+    insecure: "The link does not use a secure connection (https). No bank or agency would ask for your data like this.",
+    riskyTld: (t) => `It ends in .${t}, a cheap ending widely used in scams. On its own it proves nothing.`,
+    age: (d) => `Age of ${d}`,
+    ageNew: (n) => `Registered ${n} days ago. Scam sites are usually very new.`,
+    ageRecent: (n) => `Registered ${n} days ago (less than 6 months).`,
+    ageOld: (d) => `Registered on ${d}. An old domain does not guarantee it is legitimate.`,
     noSignalsSummary:
       "No clear signs of fraud were found. That is not a guarantee: if you are asked for data, payments or something urgent, confirm directly with the institution through a channel you look up yourself.",
     generalSteps: ["If in doubt, confirm directly with the institution through a number or website you look up yourself, not the details in the message."],

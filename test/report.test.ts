@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { reportPlan } from "../src/report.js";
 import type { Extraction } from "../src/types.js";
 
-const base: Extraction = { text: "", channel: "sms", claimedEntity: null, entityType: "desconocido", urls: [], phones: [], amounts: [], requests: [], urgency: false };
+const base: Extraction = { text: "", channel: "sms", claimedEntity: null, entityType: "desconocido", urls: [], emails: [], phones: [], amounts: [], requests: [], urgency: false };
 
 test("fake SAT starts with the SAT fake-email route and includes state complaints", () => {
   const plan = reportPlan(["sat_impersonation"], base, "es");

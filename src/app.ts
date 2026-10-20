@@ -7,7 +7,7 @@ import { LANGS, type Lang } from "./i18n.js";
 import type { InputKind } from "./types.js";
 
 const PUBLIC_DIR = join(import.meta.dirname, "..", "public");
-const KINDS: InputKind[] = ["message", "screenshot", "call", "app"];
+const KINDS: InputKind[] = ["message", "screenshot", "call", "app", "link"];
 const MAX_TEXT = 4000;
 
 // Keeps a public demo within free credits: N analyses per IP per hour, and a

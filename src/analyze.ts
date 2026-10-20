@@ -1,8 +1,9 @@
-import { type Channel, CHANNELS, type ChannelId, GENERAL_CHANNELS, PATTERNS } from "./catalog.js";
+import { type Channel, CHANNELS, type ChannelId, GENERAL_CHANNELS, OFFICIAL_DOMAINS, PATTERNS } from "./catalog.js";
 import { CHANNELS_EN, type Lang, MESSAGES, type Messages, PATTERNS_EN } from "./i18n.js";
 import { chat, chatJson, MODELS } from "./llm.js";
 import { reportPlan } from "./report.js";
 import { brandMatch, hostOf, officialOwner, registrableDomain } from "./official.js";
+import { domainAgeDays, emailFacts, extractEmails, urlFacts } from "./linkcheck.js";
 import { OFFICIAL_SEARCH_DOMAINS, search, tavilyEnabled } from "./tavily.js";
 import type { Analysis, AnalysisInput, Check, Extraction, ModelVerdict, Verdict } from "./types.js";
 
@@ -50,12 +51,14 @@ async function extract(input: AnalysisInput, trace: Trace): Promise<Extraction> 
   for (const r of calls) trace.push({ step: "extraer datos", model: r.model, ms: r.ms, tokens: r.tokens });
 
   const isApp = input.kind === "app" && text.length < 80;
+  const { emails, rest } = extractEmails(text);
   return {
     text,
     channel: isApp ? "app" : (facts.channel ?? null),
     claimedEntity: isApp ? text : (facts.claimedEntity ?? null),
     entityType: isApp ? "empresa" : (facts.entityType ?? "desconocido"),
-    urls: [...new Set(text.match(URL_RE) ?? [])].filter((u) => hostOf(u)?.includes(".")),
+    urls: [...new Set(rest.match(URL_RE) ?? [])].filter((u) => hostOf(u)?.includes(".")),
+    emails,
     phones: [...new Set(text.match(PHONE_RE) ?? [])],
     amounts: facts.amounts ?? [],
     requests: facts.requests ?? [],
@@ -67,29 +70,60 @@ async function extract(input: AnalysisInput, trace: Trace): Promise<Extraction> 
 async function verify(extraction: Extraction, isApp: boolean, trace: Trace, m: Messages): Promise<Check[]> {
   const checks: Check[] = [];
   const unofficialHosts: string[] = [];
+  /** Domains worth an age lookup: not official, not a free email provider. */
+  const ageDomains = new Set<string>();
+
   for (const url of extraction.urls) {
-    const host = hostOf(url);
-    if (!host) continue;
+    const facts = urlFacts(url);
+    if (!facts) continue;
+    const { host } = facts;
     const owner = officialOwner(host);
     const brand = brandMatch(host, extraction.claimedEntity);
-    if (owner) {
-      checks.push({ check: m.link(host), result: m.officialDomain(owner) });
-    } else if (brand === "imitates") {
-      checks.push({ check: m.link(host), result: m.imitates(extraction.claimedEntity, registrableDomain(host)) });
-      unofficialHosts.push(host);
-    } else if (brand === "matches") {
-      checks.push({ check: m.link(host), result: m.brandMatches(extraction.claimedEntity) });
-    } else {
-      checks.push({ check: m.link(host), result: m.unrelatedDomain(registrableDomain(host)) });
-      unofficialHosts.push(host);
-    }
+    const notes: string[] = [];
+    if (owner) notes.push(m.officialDomain(owner));
+    else if (brand === "imitates") notes.push(m.imitates(extraction.claimedEntity, facts.registrable));
+    else if (brand === "matches") notes.push(m.brandMatches(extraction.claimedEntity));
+    else if (!facts.shortener) notes.push(extraction.claimedEntity ? m.unrelatedDomain(facts.registrable) : m.unlistedDomain(facts.registrable));
+    if (facts.shortener) notes.push(m.shortener);
+    if (facts.isIp) notes.push(m.ipHost);
+    if (facts.disguised) notes.push(m.disguised);
+    if (facts.insecure && !owner) notes.push(m.insecure);
+    if (facts.riskyTld && !owner) notes.push(m.riskyTld(facts.riskyTld));
+    checks.push({ check: m.link(host), result: notes.join(" ") });
+    if (!owner && brand !== "matches" && !facts.shortener) unofficialHosts.push(host);
+    if (!owner && !facts.isIp && !facts.shortener) ageDomains.add(facts.registrable);
   }
 
-  if (!tavilyEnabled()) return checks;
+  for (const e of extraction.emails) {
+    const facts = emailFacts(e.address, e.displayName, extraction.claimedEntity);
+    const owner = officialOwner(facts.domain);
+    const notes: string[] = [];
+    if (owner) notes.push(m.emailOfficial(owner));
+    else if (facts.freeProvider) notes.push(m.freeEmail(facts.domain, extraction.entityType === "persona" ? null : extraction.claimedEntity));
+    else {
+      const brand = brandMatch(facts.domain, extraction.claimedEntity);
+      const real = registrableDomain(facts.domain);
+      notes.push(brand === "imitates" ? m.imitates(extraction.claimedEntity, real) : brand === "matches" ? m.brandMatches(extraction.claimedEntity) : extraction.claimedEntity ? m.unrelatedDomain(real) : m.unlistedDomain(real));
+      ageDomains.add(registrableDomain(facts.domain));
+      unofficialHosts.push(facts.domain);
+    }
+    if (facts.displayMismatch && facts.displayName) notes.push(m.displayMismatch(facts.displayName, facts.domain));
+    checks.push({ check: m.email(facts.address), result: notes.join(" ") });
+  }
+
   const started = Date.now();
-  const searches = buildSearches(extraction, unofficialHosts, isApp, m).slice(0, 4);
-  const results = await Promise.all(searches.map(runSearch));
-  trace.push({ step: `verificar con Tavily (${searches.length} búsquedas)`, ms: Date.now() - started });
+  const searches = tavilyEnabled() ? buildSearches(extraction, unofficialHosts, isApp, m).slice(0, 4) : [];
+  const [results, ages] = await Promise.all([
+    Promise.all(searches.map(runSearch)),
+    Promise.all([...ageDomains].slice(0, 3).map(async (d) => ({ d, age: await domainAgeDays(d) }))),
+  ]);
+  if (searches.length || ageDomains.size) trace.push({ step: `verificar (${searches.length} búsquedas, ${Math.min(ageDomains.size, 3)} dominios)`, ms: Date.now() - started });
+
+  for (const { d, age } of ages) {
+    if (!age) continue;
+    const result = age.days < 30 ? m.ageNew(age.days) : age.days < 180 ? m.ageRecent(age.days) : m.ageOld(age.registered);
+    checks.push({ check: m.age(d), result });
+  }
   return [...checks, ...results.filter((c): c is Check => c !== null)];
 }
 
@@ -103,9 +137,27 @@ interface PlannedSearch {
   notFound: string;
 }
 
+/**
+ * Searches use the official name when the sender is a known institution
+ * ("SAT Avisos" → "SAT"), so official alerts are found.
+ */
+function canonicalEntity(entity: string | null): string | undefined {
+  const raw = entity?.trim();
+  if (!raw) return undefined;
+  const words = normalizeWords(raw);
+  const known = Object.keys(OFFICIAL_DOMAINS).find((name) => {
+    const key = normalizeWords(name)[0];
+    return !GENERIC_WORDS.has(key) && words.includes(key);
+  });
+  return known ?? raw;
+}
+
+const GENERIC_WORDS = new Set(["banco", "gobierno"]);
+const normalizeWords = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+
 function buildSearches(e: Extraction, unofficialHosts: string[], isApp: boolean, m: Messages): PlannedSearch[] {
   const planned: PlannedSearch[] = [];
-  const entity = e.claimedEntity?.trim();
+  const entity = canonicalEntity(e.claimedEntity);
 
   if (entity && isApp) {
     planned.push({
@@ -187,6 +239,8 @@ Reglas:
 - Muchos avisos reales son normales: códigos de verificación que piden no compartirlos, avisos de compra o de movimiento sin enlaces ni peticiones, confirmaciones de entrega, recibos disponibles, recordatorios de cita, promociones que remiten al sitio de la propia empresa. Si el contenido solo informa y no pide datos, pagos, códigos, llamadas a números del mensaje ni acciones urgentes, usa "sin_senales".
 - family_impersonation solo aplica si quien escribe pide dinero, datos, códigos o una transferencia. Un familiar que pide ayuda en persona, avisa algo o cuenta que cambió de número sin pedir nada no es un fraude; si cambió de número, basta recomendar confirmarlo llamando al número anterior.
 - Un banco o institución que te pide comunicarte al número que viene en tu tarjeta, abrir su app oficial o ir a sucursal está siguiendo la práctica correcta; eso no es una señal. Sí lo es que te dé un número, enlace o contacto distinto para resolverlo.
+- Son señales: un acortador de enlaces, una dirección IP en lugar de nombre, caracteres que imitan letras, un dominio registrado hace menos de 30 días, y un banco o dependencia que escribe desde una cuenta de correo gratuita o con un nombre que no corresponde a su dominio. Un dominio antiguo no prueba que algo sea legítimo.
+- Si la entrada es solo un enlace o un correo, juzga con las verificaciones; un enlace aislado a un dominio nuevo, disfrazado o que imita a una institución es riesgo alto.
 - Un dominio que no está en la lista verificada no es por sí solo una señal; sí lo es un dominio que imita a la institución o que no corresponde a quien firma el mensaje.
 - Usa "medio" cuando hay alguna señal pero no un patrón de fraude claro, y "alto" cuando el contenido coincide con un patrón del catálogo.
 - No escribas teléfonos, correos, sitios ni pasos a seguir: la app los agrega desde fuentes oficiales verificadas.

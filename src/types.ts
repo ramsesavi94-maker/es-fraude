@@ -1,7 +1,7 @@
 import type { Channel } from "./catalog.js";
 import type { Lang } from "./i18n.js";
 
-export type InputKind = "message" | "screenshot" | "call" | "app";
+export type InputKind = "message" | "screenshot" | "call" | "app" | "link";
 
 export interface AnalysisInput {
   kind: InputKind;
@@ -20,6 +20,7 @@ export interface Extraction {
   claimedEntity: string | null;
   entityType: "institucion" | "empresa" | "persona" | "desconocido";
   urls: string[];
+  emails: { address: string; displayName: string | null }[];
   phones: string[];
   amounts: string[];
   requests: string[];

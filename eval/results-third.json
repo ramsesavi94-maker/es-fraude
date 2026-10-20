@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-18T08:58:26.761Z",
+  "date": "2026-10-20T02:47:42.179Z",
   "summary": {
     "cases": 40,
     "fraudDetected": "25/25 (100.0%)",
@@ -10,8 +10,8 @@
     "wrongPattern": [],
     "errors": [],
     "latencyMs": {
-      "median": 7985,
-      "p90": 11089
+      "median": 9018,
+      "p90": 11455
     }
   },
   "outcomes": [
@@ -22,7 +22,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 11089
+      "ms": 11585
     },
     {
       "id": "t02",
@@ -31,7 +31,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 7985
+      "ms": 6479
     },
     {
       "id": "t03",
@@ -39,10 +39,8 @@
       "risk": "alto",
       "correct": true,
       "patternHit": null,
-      "predictedPatterns": [
-        "bank_impersonation"
-      ],
-      "ms": 11659
+      "predictedPatterns": [],
+      "ms": 11455
     },
     {
       "id": "t04",
@@ -50,10 +48,8 @@
       "risk": "alto",
       "correct": true,
       "patternHit": null,
-      "predictedPatterns": [
-        "fake_government_aid"
-      ],
-      "ms": 11394
+      "predictedPatterns": [],
+      "ms": 9670
     },
     {
       "id": "t05",
@@ -64,7 +60,7 @@
       "predictedPatterns": [
         "bank_impersonation"
       ],
-      "ms": 10066
+      "ms": 9018
     },
     {
       "id": "t06",
@@ -75,7 +71,7 @@
       "predictedPatterns": [
         "bank_impersonation"
       ],
-      "ms": 9319
+      "ms": 9206
     },
     {
       "id": "t07",
@@ -83,10 +79,8 @@
       "risk": "alto",
       "correct": true,
       "patternHit": null,
-      "predictedPatterns": [
-        "fake_government_aid"
-      ],
-      "ms": 10567
+      "predictedPatterns": [],
+      "ms": 12150
     },
     {
       "id": "t08",
@@ -95,7 +89,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 8386
+      "ms": 6876
     },
     {
       "id": "t09",
@@ -106,7 +100,7 @@
       "predictedPatterns": [
         "family_impersonation"
       ],
-      "ms": 8010
+      "ms": 9734
     },
     {
       "id": "t10",
@@ -117,7 +111,7 @@
       "predictedPatterns": [
         "bank_impersonation"
       ],
-      "ms": 11840
+      "ms": 11522
     },
     {
       "id": "t11",
@@ -128,7 +122,7 @@
       "predictedPatterns": [
         "sat_impersonation"
       ],
-      "ms": 8469
+      "ms": 9650
     },
     {
       "id": "t12",
@@ -139,7 +133,7 @@
       "predictedPatterns": [
         "bank_impersonation"
       ],
-      "ms": 10987
+      "ms": 7890
     },
     {
       "id": "t13",
@@ -150,7 +144,7 @@
       "predictedPatterns": [
         "virtual_kidnapping"
       ],
-      "ms": 4858
+      "ms": 7865
     },
     {
       "id": "t14",
@@ -161,7 +155,7 @@
       "predictedPatterns": [
         "phone_extortion"
       ],
-      "ms": 5230
+      "ms": 7575
     },
     {
       "id": "t15",
@@ -172,7 +166,7 @@
       "predictedPatterns": [
         "loan_app_extortion"
       ],
-      "ms": 9340
+      "ms": 9446
     },
     {
       "id": "t16",
@@ -183,7 +177,7 @@
       "predictedPatterns": [
         "fake_job_offer"
       ],
-      "ms": 5735
+      "ms": 5525
     },
     {
       "id": "t17",
@@ -194,7 +188,7 @@
       "predictedPatterns": [
         "fake_delivery"
       ],
-      "ms": 8869
+      "ms": 8482
     },
     {
       "id": "t18",
@@ -205,7 +199,7 @@
       "predictedPatterns": [
         "fake_prize"
       ],
-      "ms": 6596
+      "ms": 9988
     },
     {
       "id": "t19",
@@ -216,7 +210,7 @@
       "predictedPatterns": [
         "family_impersonation"
       ],
-      "ms": 7730
+      "ms": 9788
     },
     {
       "id": "t20",
@@ -227,7 +221,7 @@
       "predictedPatterns": [
         "fake_government_aid"
       ],
-      "ms": 8231
+      "ms": 10022
     },
     {
       "id": "t21",
@@ -238,7 +232,7 @@
       "predictedPatterns": [
         "fake_traffic_fine"
       ],
-      "ms": 10968
+      "ms": 11376
     },
     {
       "id": "t22",
@@ -249,7 +243,7 @@
       "predictedPatterns": [
         "marketplace_scam"
       ],
-      "ms": 9603
+      "ms": 9233
     },
     {
       "id": "t23",
@@ -260,7 +254,7 @@
       "predictedPatterns": [
         "fake_delivery"
       ],
-      "ms": 8045
+      "ms": 11365
     },
     {
       "id": "t24",
@@ -271,7 +265,7 @@
       "predictedPatterns": [
         "family_impersonation"
       ],
-      "ms": 7148
+      "ms": 6361
     },
     {
       "id": "t25",
@@ -282,7 +276,7 @@
       "predictedPatterns": [
         "bank_impersonation"
       ],
-      "ms": 6437
+      "ms": 6331
     },
     {
       "id": "t26",
@@ -291,7 +285,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 8705
+      "ms": 8468
     },
     {
       "id": "t27",
@@ -300,7 +294,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 7137
+      "ms": 6326
     },
     {
       "id": "t28",
@@ -309,7 +303,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 6193
+      "ms": 5807
     },
     {
       "id": "t29",
@@ -318,7 +312,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 4253
+      "ms": 4462
     },
     {
       "id": "t30",
@@ -327,7 +321,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 5070
+      "ms": 5399
     },
     {
       "id": "t31",
@@ -336,7 +330,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 5234
+      "ms": 5039
     },
     {
       "id": "t32",
@@ -345,7 +339,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 7889
+      "ms": 9294
     },
     {
       "id": "t33",
@@ -354,7 +348,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 7797
+      "ms": 9210
     },
     {
       "id": "t34",
@@ -363,7 +357,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 5093
+      "ms": 5652
     },
     {
       "id": "t35",
@@ -372,7 +366,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 7111
+      "ms": 6952
     },
     {
       "id": "t36",
@@ -381,7 +375,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 5364
+      "ms": 5346
     },
     {
       "id": "t37",
@@ -390,7 +384,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 6863
+      "ms": 9222
     },
     {
       "id": "t38",
@@ -399,7 +393,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 9172
+      "ms": 6630
     },
     {
       "id": "t39",
@@ -408,7 +402,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 5148
+      "ms": 5709
     },
     {
       "id": "t40",
@@ -417,7 +411,7 @@
       "correct": true,
       "patternHit": null,
       "predictedPatterns": [],
-      "ms": 7373
+      "ms": 10574
     }
   ]
 }
