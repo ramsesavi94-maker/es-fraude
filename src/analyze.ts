@@ -273,7 +273,9 @@ async function reason(extraction: Extraction, checks: Check[], trace: Trace, m: 
  "summary": "una o dos frases para la persona",
  "patternIds": ["ids del catálogo que aplican"],
  "signals": [{"signal": "explicación breve", "quote": "cita textual del contenido recibido o de un extracto (·) de una página oficial; nunca cites el texto de resultado de una verificación"}],
- "reportDraft": "si el riesgo es alto o medio, borrador breve de los hechos para presentar una denuncia (qué llegó, cuándo, qué pidieron, qué datos de contacto o pago aparecen), sin datos de contacto de autoridades y sin afirmar si la persona pagó o dio datos (eso lo completa ella); si no, null"}`,
+ "reportDraft": "si el riesgo es alto o medio, borrador breve de los hechos para presentar una denuncia (qué llegó, cuándo, qué pidieron, qué datos de contacto o pago aparecen), sin datos de contacto de autoridades y sin afirmar si la persona pagó o dio datos (eso lo completa ella); si no, null"}
+
+Idioma de salida (obligatorio, aunque el contenido esté en otro idioma): ${m.outputLanguage}`,
       },
     ],
     { maxTokens: 2500, jsonMode: true },
