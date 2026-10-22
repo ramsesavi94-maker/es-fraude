@@ -133,6 +133,10 @@ interface PlannedSearch {
   includeDomains?: string[];
   /** Keeps only results that mention this text, to avoid unrelated pages. */
   mustMention?: string;
+  /** Also requires one of these word stems, so a page that only mentions the name does not count. */
+  topic?: string[];
+  /** Results to request before filtering; at most 3 are kept. */
+  maxResults?: number;
   found: (n: number) => string;
   notFound: string;
 }
@@ -178,9 +182,11 @@ function buildSearches(e: Extraction, unofficialHosts: string[], isApp: boolean,
   } else if (entity && (e.entityType === "institucion" || e.entityType === "empresa")) {
     planned.push({
       check: m.entityAlerts(entity),
-      query: `"${entity}" alerta fraude suplantación mensajes falsos`,
+      query: `${entity} alerta mensajes falsos suplantación`,
+      maxResults: 6,
       includeDomains: OFFICIAL_SEARCH_DOMAINS,
       mustMention: entity,
+      topic: FRAUD_TOPIC,
       found: (n) => m.entityAlertsFound(n, entity),
       notFound: m.entityAlertsNotFound(entity),
     });
@@ -213,13 +219,35 @@ function buildSearches(e: Extraction, unofficialHosts: string[], isApp: boolean,
 /** Lowercase, no accents, no spaces: "BBVA México" and "bbva mexico" compare equal. */
 const normalize = (s: string) => s.normalize("NFD").replace(/[̀-ͯ\s]/g, "").toLowerCase();
 
+const FRAUD_TOPIC = ["fraud", "falso", "falsa", "fake", "suplant", "estafa", "scam", "phishing", "engan", "alerta", "apocrif", "ciberdelin"];
+
+/**
+ * Whether a page mentions the needle as whole words ("SAT" must not match
+ * "satisfacer"), ignoring case and accents. Phone numbers compare digits only.
+ */
+export function mentions(text: string, needle: string): boolean {
+  if (/^\d+$/.test(needle)) return text.replace(/\D/g, "").includes(needle);
+  const words = normalizeWords(text);
+  const target = normalizeWords(needle);
+  if (!target.length) return false;
+  for (let i = 0; i + target.length <= words.length; i++) {
+    if (target.every((w, j) => words[i + j] === w)) return true;
+  }
+  return false;
+}
+
 async function runSearch(p: PlannedSearch): Promise<Check | null> {
   try {
-    let results = await search(p.query, { includeDomains: p.includeDomains });
+    let results = await search(p.query, { includeDomains: p.includeDomains, maxResults: p.maxResults ?? 3 });
     if (p.mustMention) {
-      const needle = normalize(p.mustMention);
-      results = results.filter((r) => normalize(`${r.title} ${r.url} ${r.content}`).includes(needle));
+      const needle = p.mustMention;
+      results = results.filter((r) => mentions(`${r.title} ${r.url} ${r.content}`, needle));
     }
+    if (p.topic) {
+      const stems = p.topic;
+      results = results.filter((r) => normalizeWords(`${r.title} ${r.content}`).some((w) => stems.some((s) => w.startsWith(s))));
+    }
+    results = results.slice(0, 3);
     return results.length
       ? { check: p.check, result: p.found(results.length), evidence: results.map((r) => ({ title: r.title, url: r.url, excerpt: r.content.slice(0, 280) })) }
       : { check: p.check, result: p.notFound };
