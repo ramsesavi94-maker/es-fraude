@@ -284,8 +284,17 @@ Idioma de salida (obligatorio, aunque el contenido esté en otro idioma): ${m.ou
   return data;
 }
 
+/**
+ * A quote must come from the message or an official page, never from the app's own
+ * verification text; the prompt asks for this, and this enforces it.
+ */
+function quotesOwnCheck(quote: string, checks: Check[]): boolean {
+  const q = normalize(quote).slice(0, 60);
+  return q.length >= 12 && checks.some((c) => normalize(`${c.check} ${c.result}`).includes(q));
+}
+
 /** Step 4: applies the product rules and adds verified steps and contacts from the catalog. */
-function compose(v: ModelVerdict, extraction: Extraction, lang: Lang): Verdict {
+function compose(v: ModelVerdict, extraction: Extraction, checks: Check[], lang: Lang): Verdict {
   const m = MESSAGES[lang];
   const risk = (["alto", "medio", "sin_senales"] as const).includes(v.risk) ? v.risk : "medio";
   const summary =
@@ -302,7 +311,7 @@ function compose(v: ModelVerdict, extraction: Extraction, lang: Lang): Verdict {
     risk,
     summary,
     patterns: patterns.map((p) => ({ id: p.id, name: local(p).name, sources: p.sources })),
-    signals: (v.signals ?? []).filter((s) => s.quote?.trim()),
+    signals: (v.signals ?? []).filter((s) => s.quote?.trim() && !quotesOwnCheck(s.quote, checks)),
     whatToDo: risk === "sin_senales" ? m.generalSteps : steps,
     channels: channelIds.map((id) => channel(id, lang)),
     reportDraft: risk === "sin_senales" ? null : (v.reportDraft ?? null),
@@ -336,7 +345,7 @@ export async function analyze(input: AnalysisInput): Promise<Analysis> {
   const trace: Trace = [];
   const extraction = await extract(input, trace);
   const checks = await verify(extraction, input.kind === "app", trace, m);
-  let verdict = compose(await reason(extraction, checks, trace, m), extraction, lang);
+  let verdict = compose(await reason(extraction, checks, trace, m), extraction, checks, lang);
   // Only for a bare lender name (the "App de préstamo" tab); a described app is judged on its content.
   const isLenderName = input.kind === "app" && extraction.claimedEntity === extraction.text;
   if (isLenderName && verdict.risk === "sin_senales") verdict = unverifiedApp(verdict, lang);
