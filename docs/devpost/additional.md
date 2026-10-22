@@ -102,3 +102,28 @@ What would make it a 10:
 - Documented rate limits and behavior under concurrency (some calls took 35–50 s with 3 parallel requests).
 - Prompt caching for long, repeated system prompts.
 - A per-model daily usage and cost view in the dashboard.
+
+## How would you rate your experience running Nemotron inference on Nebius compared to previous cloud or local development environments?
+
+9/10.
+
+Running these models ourselves was not an option: Nemotron 3 Ultra (550B total parameters) and Super (120B) are far beyond what a laptop without a GPU can run, and renting and operating GPU instances would have taken time and budget a small team does not have during a hackathon. With Token Factory, inference was simply an HTTPS call: no drivers, no model downloads, no serving stack, no scaling work. We spent our time on the product, the grounding and the evaluation instead of infrastructure.
+
+The point we would improve is predictability under load: single requests were fast (about 2–4 s per model call), but with three parallel requests some calls took 35–50 s, and we found no documented limits to plan around.
+
+## What additional features or improvements would have made the Nemotron on Nebius experience more effective for your project?
+
+- Schema-enforced structured output (JSON Schema, not only json_object) that behaves the same across all Nemotron sizes; JSON mode worked on Ultra but returned malformed output on Super in our tests.
+- Prompt caching for long, repeated system prompts. Most of our Ultra prompt is a fixed catalog of about 2.5k tokens sent on every call.
+- Documented rate limits and concurrency behavior, plus a status or queue indicator.
+- Consistent model IDs, and a 404 that suggests the closest model name (a one-letter typo in a deploy variable cost us debugging time).
+- A dashboard view of tokens, latency and cost per model per day.
+- Published guidance on which Nemotron size to use for which task, with latency numbers; in our case Super beat Nano on both speed and accuracy, which we only learned by testing.
+
+## What do you most hope to see from the Nemotron team next?
+
+- Stronger grounding behavior: a mode or training focus where the model refuses to state facts (phone numbers, URLs, deadlines) that are not in the provided context. This was our biggest risk for a safety app and the reason we moved all contacts out of the model.
+- Better Spanish and Latin American coverage, including evaluation results for Spanish and for regional, informal text such as SMS and WhatsApp messages.
+- A smaller, faster vision-language model for screenshot reading on mobile-first apps.
+- Safety and guardrail models (for example scam and fraud classification) available directly on Token Factory, so builders can combine them with Nemotron reasoning.
+- Reliable language control: answering in the requested language even when the input is in another one.
