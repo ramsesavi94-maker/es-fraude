@@ -156,7 +156,7 @@ Sin `TAVILY_API_KEY` la app sigue funcionando, solo con las verificaciones sin m
 
 ## Equipo
 
-Hecho por Nelson Ramses Aviles con dos compañeros de IA: **Claude Code** (arquitectura y código) y **Codex** (investigación de patrones de fraude y fuentes oficiales en México, conjuntos de evaluación y segundas opiniones).
+Hecho por Nelson Ramses Aviles y Aldo Montes de Oca, con dos compañeros de IA: **Claude Code** (arquitectura y código) y **Codex** (investigación de patrones de fraude y fuentes oficiales en México, conjuntos de evaluación y segundas opiniones).
 
 Esto es una orientación, no asesoría legal. Si estás en peligro, llama al 911.
 

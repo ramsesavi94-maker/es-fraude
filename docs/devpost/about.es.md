@@ -46,7 +46,7 @@ Tavily solo recibe nombres de instituciones, dominios y teléfonos, nunca el men
 
 El stack es TypeScript, Hono y una sola página HTML, desplegada gratis en Vercel. También se publica una imagen Docker para Nebius Serverless.
 
-Trabajamos como un equipo de tres: Nelson (producto y pruebas), **Claude Code** (arquitectura y código) y **Codex** (investigación). Codex investigó los patrones de fraude en México, las rutas oficiales de denuncia, los plazos legales y los conjuntos de evaluación, siempre con fuentes oficiales.
+Nuestro equipo: Nelson Ramses Aviles (producto y pruebas) y Aldo Montes de Oca, con dos compañeros de IA: **Claude Code** (arquitectura y código) y **Codex** (investigación). Codex investigó los patrones de fraude en México, las rutas oficiales de denuncia, los plazos legales y los conjuntos de evaluación, siempre con fuentes oficiales.
 
 ## Retos que enfrentamos
 

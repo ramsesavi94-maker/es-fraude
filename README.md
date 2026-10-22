@@ -156,7 +156,7 @@ Without `TAVILY_API_KEY` the app still works, using only the deterministic check
 
 ## Team
 
-Built by Nelson Ramses Aviles with two AI teammates: **Claude Code** (architecture and code) and **Codex** (research on Mexican scam patterns and official sources, evaluation sets and second opinions).
+Built by Nelson Ramses Aviles and Aldo Montes de Oca, with two AI teammates: **Claude Code** (architecture and code) and **Codex** (research on Mexican scam patterns and official sources, evaluation sets and second opinions).
 
 This is guidance, not legal advice. If you are in danger, call 911.
 

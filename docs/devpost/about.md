@@ -46,7 +46,7 @@ Tavily only ever receives institution names, domains and phone numbers, never th
 
 The stack is TypeScript, Hono and a single HTML page, deployed for free on Vercel. A Docker image is published for Nebius Serverless.
 
-We worked as a three-member team: Nelson (product and testing), **Claude Code** (architecture and code) and **Codex** (research). Codex investigated Mexican scam patterns, official reporting routes, legal deadlines and the evaluation sets, all with official sources.
+Our team: Nelson Ramses Aviles (product and testing) and Aldo Montes de Oca, working with two AI teammates: **Claude Code** (architecture and code) and **Codex** (research). Codex investigated Mexican scam patterns, official reporting routes, legal deadlines and the evaluation sets, all with official sources.
 
 ## Challenges we ran into
 
