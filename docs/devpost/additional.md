@@ -23,3 +23,57 @@ What could be better
 ## If the project existed before the Submission Period
 
 Not applicable: the project was created from scratch during the Submission Period (first commit on October 18, 2026).
+
+## Public code repository
+
+https://github.com/ramsesavi94-maker/es-fraude
+
+## Working demo
+
+https://es-fraude-seven.vercel.app/?lang=en
+
+## Which model(s) did you use, and why did you choose that size/variant?
+
+We use three NVIDIA Nemotron models on Nebius Token Factory, one per job:
+
+- Nemotron 3 Ultra (nvidia/Nemotron-3-Ultra-550b-a55b) for the verdict. It reasons over the message, the search evidence and a catalog of 12 scam patterns documented by Mexican authorities, and must decide between "high risk", "warning signs" and "no clear signs" without false alarms. That is the hardest step, so we use the largest reasoning model there, in JSON mode at temperature 0 for stable, structured verdicts.
+- Nemotron 3 Super (nvidia/nemotron-3-super-120b-a12b) for fact extraction: who the message claims to be, links, phone numbers, amounts and what it asks for. We first tried Nemotron 3 Nano (30B-A3B) because it is smaller, but in our tests Super was faster (about 2 s vs 3.6 s) and more accurate: it identified "SAT" as the sender where Nano returned "pending refund". So we chose Super for the fast, everyday call.
+- Nemotron 3.5 Super VL (nvidia/Nemotron-3.5-Super-VL) to read phone screenshots, because most victims only have a screenshot. It transcribes sender, amounts, links and phone numbers in about 2.5 s.
+
+Using the right size per step keeps a full analysis at about 6–9 seconds and about US$0.017, while Ultra is spent only where reasoning matters.
+
+## How would you rate Nemotron's output quality for your use case?
+
+8/10.
+
+What worked well:
+- Reasoning over evidence: Nemotron 3 Ultra combined the message, our deterministic checks and official search results into consistent verdicts. On our unseen test sets it caught 25/25 scams and 18/18 malicious links with no false alarms.
+- Spanish and Mexican context: it understood informal Mexican SMS and WhatsApp style, misspellings, and local institutions (SAT, CONDUSEF, Bienestar, SPEI) without extra training.
+- Multilingual output: it reads Spanish messages and explains them in English for the English version, keeping quotes verbatim.
+- Instruction following: Ultra in JSON mode reliably returned our schema, and Nemotron 3.5 Super VL read phone screenshots accurately.
+
+What fell short:
+- Factual hallucination of contact details: early on, Ultra gave a SAT phone number with no source and recommended a spam-reporting short code that does not exist in Mexico. For a fraud tool this is critical, so phone numbers, steps and routes now come only from a verified catalog.
+- Language drift: with English output requested, it sometimes wrote explanations in Spanish when the message was in Spanish, until we repeated the language instruction at the end of the prompt.
+- Quote discipline: it sometimes quoted our own verification text as if it were the message, so we filter those quotes in code.
+- It was initially over-cautious with legitimate bank alerts, which we fixed with explicit criteria for normal notifications.
+
+## Did you fine-tune, prompt-engineer, or use Nemotron out of the box?
+
+No fine-tuning. We used prompt engineering plus grounding and code-level guardrails:
+
+1. Grounded system prompt: a catalog of 12 scam patterns written from official Mexican alerts (CONDUSEF, SAT, SSPC, state cyber police), with explicit criteria for what normal, legitimate notifications look like.
+2. Evidence first: deterministic checks (real hostname vs official domains, lookalike detection, domain age via RDAP) and Tavily searches restricted to official Mexican sites are computed before the model runs and passed in as evidence.
+3. Constrained output: Ultra returns only a risk level, a summary, catalog pattern IDs and quoted signals, in JSON mode at temperature 0. It is told not to write phone numbers, emails or steps.
+4. Guardrails in code: the app adds verified steps and contacts from the catalog, never says "safe", and drops quotes that do not come from the message or an official page.
+5. Evaluation-driven iteration: we tuned on one synthetic set, then measured unseen sets once with no changes, to avoid overfitting the prompt.
+
+## How did Nemotron's performance compare to other models you've used for similar tasks?
+
+We did not run a head-to-head benchmark against other providers inside the product, so we cannot claim a measured comparison with them. Inside the Nemotron family we did compare on real requests:
+
+- For short fact extraction, Nemotron 3 Super beat Nemotron 3 Nano on both speed (about 2 s vs 3.6 s) and accuracy, which surprised us; Nano mislabeled the sender in a fake-tax-authority SMS.
+- For the verdict we use Nemotron 3 Ultra; with grounding and our criteria it reached no false alarms on unseen sets while catching every scam.
+- Nemotron 3 Super did not handle JSON mode well in our tests (malformed output), while Ultra did, so we use JSON mode only on Ultra.
+
+Overall, for a grounded Spanish-language safety task, the Nemotron 3 family on Token Factory was accurate and fast enough for an interactive app at about US$0.017 per analysis.
