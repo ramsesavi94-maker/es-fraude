@@ -77,3 +77,28 @@ We did not run a head-to-head benchmark against other providers inside the produ
 - Nemotron 3 Super did not handle JSON mode well in our tests (malformed output), while Ultra did, so we use JSON mode only on Ultra.
 
 Overall, for a grounded Spanish-language safety task, the Nemotron 3 family on Token Factory was accurate and fast enough for an interactive app at about US$0.017 per analysis.
+
+## Which Nebius platform capabilities were most valuable to your project and how?
+
+Nebius Token Factory was the core of the project. We did not provision GPU instances or manage any model deployment: every analysis calls Nemotron through Token Factory's serverless, OpenAI-compatible API at request time.
+
+- API access: one HTTPS endpoint (api.tokenfactory.nebius.com/v1) with a bearer key, called with plain fetch from a Node/TypeScript app. No SDK, no GPU setup, no model hosting.
+- Model choice per step: the same API exposes several Nemotron variants, so we route each step to the right size — Nemotron 3.5 Super VL for screenshots, Nemotron 3 Super for fast extraction and Nemotron 3 Ultra for the verdict. Switching or A/B-testing a model is a one-line change, which is how we found that Super beat Nano for extraction.
+- Structured output: JSON mode (response_format: json_object) on Ultra gave us valid, machine-readable verdicts we could enforce rules on.
+- Scaling without ops: the app runs as stateless functions on a free Vercel plan; inference capacity comes entirely from Token Factory, so the public demo scales with no GPUs on our side. We added timeouts, a retry on malformed JSON, and per-IP and daily limits to stay within credits.
+- Cost: pay-per-token pricing let us measure the real cost per analysis (about US$0.017) and plan for production.
+
+We also publish a Docker image (ghcr.io/ramsesavi94-maker/es-fraude) ready for Nebius Serverless AI endpoints; for the hackathon we kept hosting on a free tier and used Token Factory for all inference.
+
+## How likely are you to recommend running Nemotron on Nebius to other developers?
+
+9/10.
+
+Why: going from an idea to a working, public, multi-model app took days, not weeks. The OpenAI-compatible API meant zero integration friction, having several Nemotron sizes behind one endpoint made it easy to pick the right model per step, and latency (6–9 s for a full analysis with up to three model calls) was good enough for an interactive consumer app at about US$0.017 per analysis.
+
+What would make it a 10:
+- Per-model notes on JSON mode and structured output (it worked on Ultra but not on Super in our tests).
+- Consistent model IDs, or a 404 that suggests the closest model name.
+- Documented rate limits and behavior under concurrency (some calls took 35–50 s with 3 parallel requests).
+- Prompt caching for long, repeated system prompts.
+- A per-model daily usage and cost view in the dashboard.
